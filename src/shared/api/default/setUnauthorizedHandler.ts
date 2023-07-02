@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 let retry = true;
 
 export const setUnauthorizedHandler = (handler: (e: AxiosError) => unknown) => {
-  axios.interceptors.response.use(
+  const id = axios.interceptors.response.use(
     (res) => {
       if (res.status === 200) {
         retry = true;
@@ -33,4 +33,6 @@ export const setUnauthorizedHandler = (handler: (e: AxiosError) => unknown) => {
       return Promise.reject(e);
     }
   );
+
+  return () => axios.interceptors.response.eject(id);
 };

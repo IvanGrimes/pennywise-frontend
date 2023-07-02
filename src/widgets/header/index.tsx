@@ -7,7 +7,7 @@ export const Header = () => {
   } = theme.useToken();
 
   return (
-    <BaseHeader style={{ padding: 0, background: colorBgContainer }}>
+    <BaseHeader style={{ padding: '0 16px', background: colorBgContainer }}>
       <UserDropdown />
     </BaseHeader>
   );
