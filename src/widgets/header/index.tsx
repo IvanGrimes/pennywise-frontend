@@ -1,14 +1,24 @@
-import { Header as BaseHeader, theme } from 'shared/ui';
+import { Header as BaseHeader, HeaderMenuListItem } from 'shared/ui';
 import { UserDropdown } from 'features/user-dropdown';
+import { useLocation } from 'react-router';
+import { useStore } from 'effector-react';
+import { viewerModel } from 'entities/viewer';
+
+const menuList: HeaderMenuListItem[] = [
+  { href: '#', label: 'Accounts' },
+  { href: '#', label: 'Transactions' },
+  { href: '#', label: 'Analytics' },
+];
 
 export const Header = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const location = useLocation();
+  const isAuth = useStore(viewerModel.$isAuthed);
 
   return (
-    <BaseHeader style={{ padding: '0 16px', background: colorBgContainer }}>
-      <UserDropdown />
-    </BaseHeader>
+    <BaseHeader
+      viewerSlot={isAuth ? <UserDropdown /> : null}
+      menuList={menuList}
+      isMenuItemActive={(item) => item.href === location.pathname}
+    />
   );
 };
