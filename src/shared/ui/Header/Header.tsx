@@ -14,6 +14,7 @@ export type HeaderProps = {
   menuList: HeaderMenuListItem[];
   isMenuItemActive: (item: HeaderMenuListItem) => boolean;
   viewerSlot?: ReactNode;
+  showMenu: boolean;
 };
 
 export type HeaderMenuListItem = {
@@ -25,6 +26,7 @@ export const Header = ({
   menuList,
   isMenuItemActive,
   viewerSlot,
+  showMenu,
 }: HeaderProps) => {
   const [opened, { toggle }] = useDisclosure(false);
 
@@ -32,18 +34,22 @@ export const Header = ({
     <BaseHeader height={60}>
       <StyledContainer>
         <Flex align="center" gap={40}>
-          <StyledBurger opened={opened} onClick={toggle} size="sm" />
+          {showMenu && (
+            <StyledBurger opened={opened} onClick={toggle} size="sm" />
+          )}
           <div>logo</div>
-          <StyledMenuList spacing={5}>
-            {menuList.map((item) => (
-              <StyledMenuListItem
-                key={item.label}
-                active={isMenuItemActive(item)}
-              >
-                <Link href={item.href}>{item.label}</Link>
-              </StyledMenuListItem>
-            ))}
-          </StyledMenuList>
+          {showMenu && (
+            <StyledMenuList spacing={5}>
+              {menuList.map((item) => (
+                <StyledMenuListItem
+                  key={item.label}
+                  active={isMenuItemActive(item)}
+                >
+                  <Link href={item.href}>{item.label}</Link>
+                </StyledMenuListItem>
+              ))}
+            </StyledMenuList>
+          )}
         </Flex>
         {viewerSlot}
       </StyledContainer>

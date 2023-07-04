@@ -1,5 +1,5 @@
 import { Link } from 'shared/ui';
-import { Auth } from 'entities/viewer';
+import { Auth } from 'entities/auth';
 import { AuthSignUpByEmail } from 'features/auth/sign-up/by-email';
 import { routes } from 'shared/routes';
 

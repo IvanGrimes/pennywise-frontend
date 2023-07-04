@@ -1,4 +1,4 @@
-import { Auth } from 'entities/viewer';
+import { Auth } from 'entities/auth';
 import { AuthResetPassword } from 'features/auth/reset-password';
 
 export const ResetPassword = () => (

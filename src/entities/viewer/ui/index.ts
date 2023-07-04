@@ -1,2 +1,1 @@
-export * from './Auth';
-export * from './Avatar';
+export * from './UserDropdown';

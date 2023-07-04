@@ -1,65 +1,26 @@
-import { useState } from 'react';
-import { useEvent } from 'effector-react';
-import { Avatar, viewerModel } from 'entities/viewer';
-import { Menu, Text, Group, rem } from 'shared/ui';
-import {
-  IconChevronDown,
-  IconSettings,
-  IconLogout,
-  IconMail,
-} from 'shared/icons';
-import { StyledButton } from './ui.styled';
+import { useEvent, useStore } from 'effector-react';
+import { viewerModel, UserDropdown as BaseUserDropdown } from 'entities/viewer';
+import { useEffect } from 'react';
+import { authModel } from 'entities/auth';
 
-export type DropdownProps = {
-  firstName: string;
-  lastName: string;
-  email: string;
-};
+export const UserDropdown = () => {
+  const isAuth = useStore(authModel.$isAuthed);
+  const viewer = useStore(viewerModel.$viewer);
+  const fetchViewer = useEvent(viewerModel.effects.fetchViewerFx);
+  const signOut = useEvent(authModel.effects.signOutFx);
 
-const iconSize = rem(16);
+  console.log(viewer, isAuth);
 
-export const Dropdown = ({ firstName, lastName, email }: DropdownProps) => {
-  const [open, setOpen] = useState(false);
-  const signOut = useEvent(viewerModel.effects.signOutFx);
+  useEffect(() => {
+    if (!isAuth) return;
+    if (viewer) return;
 
-  return (
-    <Menu
-      width={260}
-      position="bottom-end"
-      transitionProps={{ transition: 'pop-top-right' }}
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      withinPortal
-    >
-      <Menu.Target>
-        <StyledButton active={open}>
-          <Group spacing={4}>
-            <Group spacing={10}>
-              <Avatar firstName={firstName} lastName={lastName} />
-              <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
-                {firstName} {lastName}
-              </Text>
-            </Group>
-            <IconChevronDown size={rem(12)} stroke={1.5} />
-          </Group>
-        </StyledButton>
-      </Menu.Target>
-      <Menu.Dropdown>
-        <Menu.Label>
-          <Group spacing={10}>
-            <IconMail size={iconSize} />
-            <Text color="black">{email}</Text>
-          </Group>
-        </Menu.Label>
-        <Menu.Divider />
-        <Menu.Label>Settings</Menu.Label>
-        <Menu.Item icon={<IconSettings size={iconSize} stroke={1.5} />}>
-          Account settings
-        </Menu.Item>
-        <Menu.Item icon={<IconLogout size={iconSize} stroke={1.5} />}>
-          Logout
-        </Menu.Item>
-      </Menu.Dropdown>
-    </Menu>
-  );
+    void fetchViewer();
+  }, [fetchViewer, isAuth, viewer]);
+
+  if (!isAuth) return null;
+
+  if (!viewer) return <>loading</>;
+
+  return <BaseUserDropdown {...viewer} onSignOut={signOut} />;
 };

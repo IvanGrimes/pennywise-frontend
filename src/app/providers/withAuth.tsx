@@ -4,15 +4,17 @@ import { routes } from 'shared/routes';
 import { api } from 'shared/api';
 import axios from 'axios';
 import { useStore, useEvent } from 'effector-react';
-import { viewerModel } from 'entities/viewer';
 import { useLocation } from 'react-router';
+import { authModel } from 'entities/auth';
+import { useNavigate } from 'react-router-dom';
 
 export const withAuth = (Component: FunctionComponent) => {
   const WrappedComponent = () => {
-    const token = useStore(viewerModel.$token);
-    const isAuthInit = useStore(viewerModel.$isAuthInit);
-    const setToken = useEvent(viewerModel.events.setToken);
+    const token = useStore(authModel.$token);
+    const isAuthInit = useStore(authModel.$isAuthInit);
+    const setToken = useEvent(authModel.events.setToken);
     const location = useLocation();
+    const navigate = useNavigate();
 
     useMount(() => {
       if (token) return;
@@ -42,18 +44,27 @@ export const withAuth = (Component: FunctionComponent) => {
             throw e;
           }
 
-          const result = await api.auth.refresh();
+          try {
+            const result = await api.auth.refresh();
 
-          writeAccessToken(result.accessToken);
-          api.setToken(result.accessToken);
+            writeAccessToken(result.accessToken);
+            api.setToken(result.accessToken);
 
-          if (e.config) {
-            e.config.headers.set(
-              'Authorization',
-              `Bearer ${result.accessToken}`
-            );
+            if (e.config) {
+              e.config.headers.set(
+                'Authorization',
+                `Bearer ${result.accessToken}`
+              );
 
-            return axios.request(e.config);
+              return await axios.request(e.config);
+            }
+          } catch (e) {
+            // await api.auth.signOut();
+
+            removeAccessToken();
+            navigate(routes.signIn);
+
+            throw e;
           }
 
           throw e;

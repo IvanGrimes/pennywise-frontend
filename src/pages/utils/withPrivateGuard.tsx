@@ -1,13 +1,13 @@
 import { FunctionComponent, useEffect } from 'react';
 import { useStore } from 'effector-react';
-import { viewerModel } from 'entities/viewer';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'shared/routes';
+import { authModel } from 'entities/auth';
 
 export const withPrivateGuard = (Component: FunctionComponent) => {
   const WrappedComponent = () => {
-    const isAuthInit = useStore(viewerModel.$isAuthInit);
-    const isAuthed = useStore(viewerModel.$isAuthed);
+    const isAuthInit = useStore(authModel.$isAuthInit);
+    const isAuthed = useStore(authModel.$isAuthed);
     const navigate = useNavigate();
 
     useEffect(() => {

@@ -1,17 +1,17 @@
 import { Button, TextInput, PasswordInput } from 'shared/ui';
 import { useEvent, useStore } from 'effector-react';
-import { viewerModel } from 'entities/viewer';
 import { useEffect } from 'react';
 import { useForm } from 'shared/form';
 import {
   showErrorNotification,
   cleanNotifications,
 } from 'shared/notifications';
+import { authModel } from 'entities/auth';
 
 export const AuthSignUpByEmail = () => {
-  const signIn = useEvent(viewerModel.effects.signUpFx);
-  const loading = useStore(viewerModel.effects.signUpFx.pending);
-  const error = useStore(viewerModel.$error);
+  const signIn = useEvent(authModel.effects.signUpFx);
+  const loading = useStore(authModel.effects.signUpFx.pending);
+  const error = useStore(authModel.$signUpError);
   const form = useForm({
     initialValues: {
       firstName: '',
@@ -26,7 +26,7 @@ export const AuthSignUpByEmail = () => {
         try {
           await signIn({ firstName, lastName, email, password });
         } catch (e) {
-          form.setErrors(viewerModel.$error.getState());
+          form.setErrors(authModel.$signUpError.getState());
         }
       };
 

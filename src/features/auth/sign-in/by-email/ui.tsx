@@ -7,7 +7,6 @@ import {
   Link,
 } from 'shared/ui';
 import { useEvent, useStore } from 'effector-react';
-import { viewerModel } from 'entities/viewer';
 import { useEffect } from 'react';
 import { useForm } from 'shared/form';
 import {
@@ -15,11 +14,12 @@ import {
   cleanNotifications,
 } from 'shared/notifications';
 import { routes } from 'shared/routes';
+import { authModel } from 'entities/auth';
 
 export const AuthSignInByEmail = () => {
-  const signIn = useEvent(viewerModel.effects.signInFx);
-  const loading = useStore(viewerModel.effects.signInFx.pending);
-  const error = useStore(viewerModel.$error);
+  const signIn = useEvent(authModel.effects.signInFx);
+  const loading = useStore(authModel.effects.signInFx.pending);
+  const error = useStore(authModel.$signInError);
   const form = useForm({
     initialValues: {
       email: '',
@@ -32,7 +32,7 @@ export const AuthSignInByEmail = () => {
       try {
         await signIn({ email, password });
       } catch (e) {
-        form.setErrors(viewerModel.$error.getState());
+        form.setErrors(authModel.$signInError.getState());
       }
     };
 
