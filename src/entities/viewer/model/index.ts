@@ -1,10 +1,9 @@
 import { createEffect, createStore } from 'effector';
-import { api } from 'shared/api';
-import { UserResponseDto } from '../../../generated/api';
+import { api, MeResponseDto } from 'shared/api';
 
-const fetchViewerFx = createEffect(() => api.auth.user());
+const fetchViewerFx = createEffect(api.user.me);
 
-export const $viewer = createStore<UserResponseDto | null>(null).on(
+export const $viewer = createStore<MeResponseDto | null>(null).on(
   fetchViewerFx.doneData,
   (_, payload) => payload
 );

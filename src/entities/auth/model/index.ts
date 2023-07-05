@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore, Effect } from 'effector';
-import { ApiError, SignInRequestDto, SignUpRequestDto } from 'generated/api';
+import { ApiError } from 'generated/api';
 import { api } from 'shared/api';
 
 enum AuthEnum {
@@ -10,15 +10,11 @@ enum AuthEnum {
 
 type Token = string | null;
 
-const signUpFx = createEffect((params: SignUpRequestDto) =>
-  api.auth.signUp(params)
-);
+const signUpFx = createEffect(api.auth.signUp);
 
-const signInFx = createEffect((params: SignInRequestDto) =>
-  api.auth.signIn(params)
-);
+const signInFx = createEffect(api.auth.signIn);
 
-const signOutFx = createEffect(() => api.auth.signOut());
+const signOutFx = createEffect(api.auth.signOut);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getErrorStore = <T extends Effect<any, any, Error>>(effect: T) =>

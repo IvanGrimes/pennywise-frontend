@@ -14,10 +14,6 @@ export const StyledButton = styled(UnstyledButton)<
       theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
   },
 
-  [theme.fn.smallerThan('xs')]: {
-    display: 'none',
-  },
-
   ...(active
     ? {
         backgroundColor:

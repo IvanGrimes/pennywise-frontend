@@ -5,4 +5,5 @@ export {
   IconSettings,
   IconLogout,
   IconMail,
+  IconMailOff,
 } from '@tabler/icons-react';

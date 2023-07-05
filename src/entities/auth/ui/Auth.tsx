@@ -15,15 +15,7 @@ export const Auth = ({
   formSlot,
 }: AuthProps) => (
   <Container size={500}>
-    <Title
-      align="center"
-      sx={(theme) => ({
-        fontFamily: `Greycliff CF${
-          theme.fontFamily ? `, ${theme.fontFamily}` : ''
-        }`,
-        fontWeight: 900,
-      })}
-    >
+    <Title align="center" sx={{ fontWeight: 900 }}>
       {titleSlot}
     </Title>
     <Text color="dimmed" size="sm" align="center" mt={5}>

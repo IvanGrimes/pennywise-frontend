@@ -1,18 +1,14 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Menu, Text, Group, rem, Avatar } from 'shared/ui';
-import {
-  IconChevronDown,
-  IconSettings,
-  IconLogout,
-  IconMail,
-} from 'shared/icons';
+import { IconChevronDown, IconSettings, IconLogout } from 'shared/icons';
 import { StyledButton } from './index.styled';
 
 export type UserDropdownProps = {
   firstName: string;
   lastName: string;
-  email: string;
+  emailSlot: ReactNode;
   onSignOut: () => unknown;
+  loading: boolean;
 };
 
 const iconSize = rem(16);
@@ -20,8 +16,9 @@ const iconSize = rem(16);
 export const UserDropdown = ({
   firstName,
   lastName,
-  email,
+  emailSlot,
   onSignOut,
+  loading,
 }: UserDropdownProps) => {
   const [open, setOpen] = useState(false);
 
@@ -51,20 +48,19 @@ export const UserDropdown = ({
         </StyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>
-          <Group spacing={10}>
-            <IconMail size={iconSize} />
-            <Text color="black">{email}</Text>
-          </Group>
-        </Menu.Label>
+        <Menu.Label>{emailSlot}</Menu.Label>
         <Menu.Divider />
         <Menu.Label>Settings</Menu.Label>
-        <Menu.Item icon={<IconSettings size={iconSize} stroke={1.5} />}>
+        <Menu.Item
+          icon={<IconSettings size={iconSize} stroke={1.5} />}
+          disabled={loading}
+        >
           Account settings
         </Menu.Item>
         <Menu.Item
           icon={<IconLogout size={iconSize} stroke={1.5} />}
           onClick={onSignOut}
+          disabled={loading}
         >
           Sign out
         </Menu.Item>

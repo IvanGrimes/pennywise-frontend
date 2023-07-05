@@ -8,6 +8,7 @@ const Main = lazy(() => import('./Main'));
 const SignIn = lazy(() => import('./SignIn'));
 const SignUp = lazy(() => import('./SignUp'));
 const ResetPassword = lazy(() => import('./ResetPassword'));
+const EmailVerification = lazy(() => import('./EmailVerification'));
 
 export const Routing = () => (
   <Layout headerSlot={<Header />}>
@@ -16,6 +17,7 @@ export const Routing = () => (
       <Route path={routes.signIn} element={<SignIn />} />
       <Route path={routes.signUp} element={<SignUp />} />
       <Route path={routes.resetPassword} element={<ResetPassword />} />
+      <Route path={routes.verifyEmail} element={<EmailVerification />} />
     </Routes>
   </Layout>
 );

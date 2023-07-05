@@ -7,7 +7,6 @@ import type { SignInResponseDto } from '../models/SignInResponseDto';
 import type { SignOutResponseDto } from '../models/SignOutResponseDto';
 import type { SignUpRequestDto } from '../models/SignUpRequestDto';
 import type { SignUpResponseDto } from '../models/SignUpResponseDto';
-import type { UserResponseDto } from '../models/UserResponseDto';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -53,17 +52,6 @@ export class AuthService {
             errors: {
                 401: `Wrong credentials`,
             },
-        });
-    }
-
-    /**
-     * @returns UserResponseDto
-     * @throws ApiError
-     */
-    public user(): CancelablePromise<UserResponseDto> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/auth/user',
         });
     }
 

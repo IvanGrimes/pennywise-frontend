@@ -14,6 +14,7 @@ export {
   Avatar,
   Menu,
   UnstyledButton,
+  Loader,
 } from '@mantine/core';
 export type {
   TextInputProps,
@@ -30,6 +31,7 @@ export type {
   AvatarProps,
   MenuProps,
   UnstyledButtonProps,
+  LoaderProps,
 } from '@mantine/core';
 
 export * from './Layout';

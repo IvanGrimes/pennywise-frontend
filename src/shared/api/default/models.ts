@@ -3,5 +3,7 @@ export type {
   SignUpResponseDto,
   SignInRequestDto,
   SignInResponseDto,
+  MeResponseDto,
+  VerifyRequestDto,
 } from 'generated/api';
 export { ApiError } from 'generated/api';

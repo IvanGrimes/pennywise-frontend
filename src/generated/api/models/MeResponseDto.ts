@@ -2,9 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UserResponseDto = {
+export type MeResponseDto = {
     firstName: string;
     lastName: string;
     email: string;
+    isEmailVerified: boolean;
 };
 
