@@ -5,6 +5,7 @@ export {
   Checkbox,
   Anchor,
   Paper,
+  Card,
   Title,
   Text,
   Button,
@@ -15,10 +16,14 @@ export {
   Menu,
   UnstyledButton,
   Loader,
+  TypographyStylesProvider,
+  Modal,
+  ScrollArea,
 } from '@mantine/core';
 export type {
   TextInputProps,
   PasswordInputProps,
+  CardProps,
   CheckboxProps,
   AnchorProps,
   PaperProps,
@@ -32,6 +37,8 @@ export type {
   MenuProps,
   UnstyledButtonProps,
   LoaderProps,
+  ModalProps,
+  ScrollAreaProps,
 } from '@mantine/core';
 
 export * from './Layout';

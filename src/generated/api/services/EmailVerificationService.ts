@@ -25,6 +25,11 @@ export class EmailVerificationService {
             url: '/email-verification/verify',
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                400: `Bad email verification token`,
+                409: `Email already verified`,
+                410: `Email verification token expired`,
+            },
         });
     }
 

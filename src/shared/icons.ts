@@ -8,4 +8,5 @@ export {
   IconMailOff,
   IconCircleX,
   IconCircleCheck,
+  IconDeviceDesktop,
 } from '@tabler/icons-react';

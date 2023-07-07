@@ -1,10 +1,12 @@
 import { FunctionComponent } from 'react';
-import { MantineProvider } from 'shared/ui';
+import { MantineProvider, TypographyStylesProvider } from 'shared/ui';
 
 export const withThemeProvider = (Component: FunctionComponent) => {
   const WrappedComponent = () => (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Component />
+      <TypographyStylesProvider>
+        <Component />
+      </TypographyStylesProvider>
     </MantineProvider>
   );
 

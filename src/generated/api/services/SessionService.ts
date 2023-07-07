@@ -15,7 +15,7 @@ export class SessionService {
      * @returns AllResponseDto
      * @throws ApiError
      */
-    public all(): CancelablePromise<AllResponseDto> {
+    public all(): CancelablePromise<Array<AllResponseDto>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/session/all',

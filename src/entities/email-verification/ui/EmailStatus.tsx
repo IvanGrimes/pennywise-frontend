@@ -17,7 +17,7 @@ export const EmailStatus = ({
 }: EmailStatusProps) => (
   <Group spacing={10}>
     {isVerified ? (
-      <IconMail color="teal" size={iconSize} />
+      <IconMail color="green" size={iconSize} />
     ) : (
       <IconMailOff color="red" size={iconSize} />
     )}
