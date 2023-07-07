@@ -7,6 +7,7 @@ import { useStore, useEvent } from 'effector-react';
 import { useLocation } from 'react-router';
 import { authModel } from 'entities/auth';
 import { useNavigate } from 'react-router-dom';
+import { viewerModel } from '../../entities/viewer';
 
 export const withAuth = (Component: FunctionComponent) => {
   const WrappedComponent = () => {
@@ -34,6 +35,10 @@ export const withAuth = (Component: FunctionComponent) => {
       }
     }, [isAuthInit, token]);
 
+    useEffect(() => {
+      viewerModel.$viewer.on(authModel.effects.signOutFx.done, () => null);
+    }, []);
+
     useEffect(
       () =>
         api.setUnauthorizedHandler(async (e) => {
@@ -59,7 +64,7 @@ export const withAuth = (Component: FunctionComponent) => {
               return await axios.request(e.config);
             }
           } catch (e) {
-            // await api.auth.signOut();
+            await authModel.effects.signOutFx();
 
             removeAccessToken();
             navigate(routes.signIn);
@@ -69,7 +74,7 @@ export const withAuth = (Component: FunctionComponent) => {
 
           throw e;
         }),
-      [location.pathname]
+      [location.pathname, navigate]
     );
 
     return <Component />;

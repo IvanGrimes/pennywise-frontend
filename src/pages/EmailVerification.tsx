@@ -1,5 +1,5 @@
 import { EmailVerification } from 'features/email-verification';
-import { withPrivateGuard } from './utils/withPrivateGuard.tsx';
+import { withPrivateGuard } from './utils/withPrivateGuard';
 
 const EmailVerificationPage = () => <EmailVerification />;
 

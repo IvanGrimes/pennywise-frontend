@@ -7,6 +7,7 @@ import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 
 import { AuthService } from './services/AuthService';
 import { EmailVerificationService } from './services/EmailVerificationService';
+import { SessionService } from './services/SessionService';
 import { UserService } from './services/UserService';
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
@@ -15,6 +16,7 @@ export class Api {
 
     public readonly auth: AuthService;
     public readonly emailVerification: EmailVerificationService;
+    public readonly session: SessionService;
     public readonly user: UserService;
 
     public readonly request: BaseHttpRequest;
@@ -34,6 +36,7 @@ export class Api {
 
         this.auth = new AuthService(this.request);
         this.emailVerification = new EmailVerificationService(this.request);
+        this.session = new SessionService(this.request);
         this.user = new UserService(this.request);
     }
 }

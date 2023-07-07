@@ -25,9 +25,9 @@ const getErrorStore = <T extends Effect<any, any, Error>>(effect: T) =>
 
 export const $signUpError = getErrorStore(signUpFx);
 
-export const $signInError = getErrorStore(signUpFx);
+export const $signInError = getErrorStore(signInFx);
 
-export const $signOutError = getErrorStore(signUpFx);
+export const $signOutError = getErrorStore(signOutFx);
 
 const setToken = createEvent<Token>();
 

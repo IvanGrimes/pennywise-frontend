@@ -9,6 +9,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AllResponseDto } from './models/AllResponseDto';
 export type { ApiErrorResponseDto } from './models/ApiErrorResponseDto';
 export type { MeResponseDto } from './models/MeResponseDto';
 export type { RefreshTokenResponseDto } from './models/RefreshTokenResponseDto';
@@ -17,9 +18,11 @@ export type { SignInResponseDto } from './models/SignInResponseDto';
 export type { SignOutResponseDto } from './models/SignOutResponseDto';
 export type { SignUpRequestDto } from './models/SignUpRequestDto';
 export type { SignUpResponseDto } from './models/SignUpResponseDto';
+export type { TerminateRequestDto } from './models/TerminateRequestDto';
 export type { VerifyRequestDto } from './models/VerifyRequestDto';
 export type { VerifyResponseDto } from './models/VerifyResponseDto';
 
 export { AuthService } from './services/AuthService';
 export { EmailVerificationService } from './services/EmailVerificationService';
+export { SessionService } from './services/SessionService';
 export { UserService } from './services/UserService';

@@ -1,12 +1,22 @@
 import { useEvent, useStore } from 'effector-react';
-import { viewerModel, UserDropdown as BaseUserDropdown } from 'entities/viewer';
+import { UserDropdown as BaseUserDropdown, viewerModel } from 'entities/viewer';
 import { useEffect } from 'react';
 import { authModel } from 'entities/auth';
 import {
   EmailStatus,
   emailVerificationModel,
   ResendButton,
+  EmailVerificationStatusEnum,
 } from 'entities/email-verification';
+import { showErrorNotification } from 'shared/notifications';
+
+const resendErrorMessages: Partial<
+  Record<EmailVerificationStatusEnum, string>
+> = {
+  [EmailVerificationStatusEnum.CONFLICT]: 'Email has been already verified',
+  [EmailVerificationStatusEnum.UNKNOWN]:
+    'Something went wrong, try again later',
+};
 
 export const UserDropdown = () => {
   const isAuth = useStore(authModel.$isAuthed);
@@ -16,6 +26,7 @@ export const UserDropdown = () => {
   const resendVerificationLink = useEvent(
     emailVerificationModel.effects.resendFx
   );
+  const resendResult = useStore(emailVerificationModel.$resendResult);
   const isResendVerificationLinkLoading = useStore(
     emailVerificationModel.effects.resendFx.pending
   );
@@ -26,6 +37,15 @@ export const UserDropdown = () => {
 
     void fetchViewer();
   }, [fetchViewer, isAuth, viewer]);
+
+  useEffect(() => {
+    if (isResendVerificationLinkLoading || !resendResult) return;
+
+    showErrorNotification({
+      title: 'Resend verification link',
+      message: resendErrorMessages[resendResult],
+    });
+  }, [isResendVerificationLinkLoading, resendResult]);
 
   if (!isAuth) return null;
 
