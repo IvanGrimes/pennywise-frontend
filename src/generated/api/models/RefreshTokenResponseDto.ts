@@ -4,6 +4,6 @@
 
 export type RefreshTokenResponseDto = {
     accessToken: string;
-    refreshToken: string;
+    refreshToken: string | null;
 };
 

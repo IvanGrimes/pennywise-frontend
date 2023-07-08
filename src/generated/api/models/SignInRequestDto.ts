@@ -11,5 +11,9 @@ export type SignInRequestDto = {
      * The password of a user
      */
     password: string;
+    /**
+     * Whether should create a refresh token
+     */
+    remember: boolean;
 };
 

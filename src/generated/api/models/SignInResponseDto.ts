@@ -4,6 +4,6 @@
 
 export type SignInResponseDto = {
     accessToken: string;
-    refreshToken: string;
+    refreshToken: string | null;
 };
 

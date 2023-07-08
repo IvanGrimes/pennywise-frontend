@@ -24,13 +24,13 @@ export const AuthSignInByEmail = () => {
     initialValues: {
       email: '',
       password: '',
-      remember: false,
+      remember: true,
     },
   });
-  const handleSubmit = form.onSubmit(({ email, password }) => {
+  const handleSubmit = form.onSubmit(({ email, password, remember }) => {
     const performRequest = async () => {
       try {
-        await signIn({ email, password });
+        await signIn({ email, password, remember });
       } catch (e) {
         form.setErrors(authModel.$signInError.getState());
       }
@@ -75,7 +75,7 @@ export const AuthSignInByEmail = () => {
         <Checkbox
           label="Remember me"
           disabled={loading}
-          {...form.getInputProps('remember')}
+          {...form.getInputProps('remember', { type: 'checkbox' })}
         />
         <Link href={routes.resetPassword} size="sm">
           Forgot password?
