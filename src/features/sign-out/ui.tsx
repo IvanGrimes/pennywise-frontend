@@ -10,7 +10,7 @@ export const SignOut = () => {
   return (
     <UserDropdownItem
       Icon={IconLogout}
-      onClick={() => void signOut}
+      onClick={() => void signOut()}
       loading={loading}
     >
       Sign out

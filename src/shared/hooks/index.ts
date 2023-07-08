@@ -1,2 +1,2 @@
 export * from './useMount';
-export * from './useDisclosure';
+export { useDisclosure, usePrevious } from '@mantine/hooks';

@@ -19,6 +19,7 @@ export type { SignOutResponseDto } from './models/SignOutResponseDto';
 export type { SignUpRequestDto } from './models/SignUpRequestDto';
 export type { SignUpResponseDto } from './models/SignUpResponseDto';
 export type { TerminateRequestDto } from './models/TerminateRequestDto';
+export type { TerminateResponseDto } from './models/TerminateResponseDto';
 export type { VerifyRequestDto } from './models/VerifyRequestDto';
 export type { VerifyResponseDto } from './models/VerifyResponseDto';
 

@@ -1,11 +1,15 @@
 import { createEffect, createStore } from 'effector';
 import { api, MeResponseDto } from 'shared/api';
 
-const fetchViewerFx = createEffect(api.user.me);
+const fetchMeFx = createEffect(api.user.me);
 
-export const $viewer = createStore<MeResponseDto | null>(null).on(
-  fetchViewerFx.doneData,
+export const $me = createStore<MeResponseDto | null>(null).on(
+  fetchMeFx.doneData,
   (_, payload) => payload
 );
 
-export const effects = { fetchViewerFx };
+export const $meError = createStore<string | null>(null)
+  .on(fetchMeFx.pending, (state, payload) => (payload ? null : state))
+  .on(fetchMeFx.failData, (_, e) => e.message);
+
+export const effects = { fetchMeFx };

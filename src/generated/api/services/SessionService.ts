@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type { AllResponseDto } from '../models/AllResponseDto';
 import type { TerminateRequestDto } from '../models/TerminateRequestDto';
+import type { TerminateResponseDto } from '../models/TerminateResponseDto';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -24,12 +25,12 @@ export class SessionService {
 
     /**
      * @param requestBody
-     * @returns any
+     * @returns TerminateResponseDto
      * @throws ApiError
      */
     public terminate(
         requestBody: TerminateRequestDto,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<TerminateResponseDto> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/session/terminate',
@@ -39,10 +40,10 @@ export class SessionService {
     }
 
     /**
-     * @returns any
+     * @returns TerminateResponseDto
      * @throws ApiError
      */
-    public terminateAll(): CancelablePromise<any> {
+    public terminateAll(): CancelablePromise<TerminateResponseDto> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/session/terminate-all',

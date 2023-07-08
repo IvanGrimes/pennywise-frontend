@@ -8,6 +8,7 @@ import { useLocation } from 'react-router';
 import { authModel } from 'entities/auth';
 import { useNavigate } from 'react-router-dom';
 import { viewerModel } from '../../entities/viewer';
+import { sessionModel } from 'entities/session';
 
 export const withAuth = (Component: FunctionComponent) => {
   const WrappedComponent = () => {
@@ -16,11 +17,21 @@ export const withAuth = (Component: FunctionComponent) => {
     const setToken = useEvent(authModel.events.setToken);
     const location = useLocation();
     const navigate = useNavigate();
+    const signOut = useEvent(authModel.effects.signOutFx);
 
     useMount(() => {
       if (token) return;
 
       setToken(readAccessToken());
+    });
+
+    useMount(() => {
+      [
+        viewerModel.$me,
+        viewerModel.$meError,
+        sessionModel.$sessions,
+        sessionModel.$sessionsError,
+      ].forEach((store) => store.reset(authModel.effects.signOutFx.doneData));
     });
 
     useEffect(() => {
@@ -35,10 +46,6 @@ export const withAuth = (Component: FunctionComponent) => {
       }
     }, [isAuthInit, token]);
 
-    useEffect(() => {
-      viewerModel.$viewer.on(authModel.effects.signOutFx.done, () => null);
-    }, []);
-
     useEffect(
       () =>
         api.setUnauthorizedHandler(async (e) => {
@@ -52,7 +59,7 @@ export const withAuth = (Component: FunctionComponent) => {
           try {
             const result = await api.auth.refresh();
 
-            writeAccessToken(result.accessToken);
+            setToken(result.accessToken);
             api.setToken(result.accessToken);
 
             if (e.config) {
@@ -64,17 +71,19 @@ export const withAuth = (Component: FunctionComponent) => {
               return await axios.request(e.config);
             }
           } catch (e) {
-            await authModel.effects.signOutFx();
+            queueMicrotask(async () => {
+              await signOut();
 
-            removeAccessToken();
-            navigate(routes.signIn);
+              removeAccessToken();
+              navigate(routes.signIn);
+            });
 
             throw e;
           }
 
           throw e;
         }),
-      [location.pathname, navigate]
+      [location.pathname, navigate, setToken, signOut]
     );
 
     return <Component />;

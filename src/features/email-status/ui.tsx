@@ -18,7 +18,7 @@ const resendErrorMessages: Partial<
 };
 
 export const EmailStatus = () => {
-  const viewer = useStore(viewerModel.$viewer);
+  const me = useStore(viewerModel.$me);
   const resendVerificationLink = useEvent(
     emailVerificationModel.effects.resendFx
   );
@@ -36,13 +36,13 @@ export const EmailStatus = () => {
     });
   }, [isResendVerificationLinkLoading, resendResult]);
 
-  if (!viewer) return null;
+  if (!me) return null;
 
   return (
     <>
       <BaseEmailStatus
-        email={viewer.email}
-        isVerified={viewer.isEmailVerified}
+        email={me.email}
+        isVerified={me.isEmailVerified}
         resendButtonSlot={
           <ResendButton
             onClick={resendVerificationLink}

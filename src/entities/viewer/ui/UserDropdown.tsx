@@ -8,7 +8,6 @@ export type UserDropdownProps = {
   emailSlot: ReactNode;
   sessionsItemSlot: ReactNode;
   signOutItemSlot: ReactNode;
-  loading: boolean;
 };
 
 export const UserDropdown = ({
@@ -16,7 +15,6 @@ export const UserDropdown = ({
   emailSlot,
   sessionsItemSlot,
   signOutItemSlot,
-  loading,
 }: UserDropdownProps) => {
   const [open, setOpen] = useState(false);
 
@@ -38,7 +36,6 @@ export const UserDropdown = ({
           icon={
             <IconSettings size={dropdownIconSize} stroke={dropdownIconStroke} />
           }
-          disabled={loading}
         >
           Account settings
         </Menu.Item>

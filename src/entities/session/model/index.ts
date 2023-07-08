@@ -13,4 +13,8 @@ export const $sessions = createStore<AllResponseDto[]>([]).on(
   (_, payload) => payload
 );
 
+export const $sessionsError = createStore<string | null>(null)
+  .on(getAllFx.pending, (state, payload) => (payload ? null : state))
+  .on(getAllFx.failData, (_, e) => e.message);
+
 export const effects = { getAllFx, terminateFx, terminateAllFx };

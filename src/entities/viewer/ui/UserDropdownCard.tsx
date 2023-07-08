@@ -6,6 +6,8 @@ import {
   UnstyledButton,
   UnstyledButtonProps,
   Menu,
+  Skeleton,
+  Flex,
 } from 'shared/ui';
 import { IconChevronDown } from 'shared/icons';
 import { dropdownIconStroke } from './const';
@@ -37,6 +39,13 @@ const StyledButton = styled(UnstyledButton)<
       }
     : {}),
 }));
+
+export const UserDropdownCardSkeleton = () => (
+  <Flex align="center" gap={12}>
+    <Skeleton height={30} circle />
+    <Skeleton height={18} width={108} />
+  </Flex>
+);
 
 export const UserDropdownCard = ({
   active,

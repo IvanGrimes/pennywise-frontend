@@ -9,4 +9,6 @@ export {
   IconCircleX,
   IconCircleCheck,
   IconDeviceDesktop,
+  IconHandStop,
+  IconReload,
 } from '@tabler/icons-react';

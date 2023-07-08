@@ -21,6 +21,7 @@
     "@tabler/icons-react": "^2.23.0",
     "axios": "^1.4.0",
     "compose-function": "^3.0.3",
+    "dayjs": "^1.11.9",
     "effector": "^22.8.6",
     "effector-logger": "^0.14.0",
     "effector-react": "^22.5.3",

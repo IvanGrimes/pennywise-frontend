@@ -61,6 +61,7 @@ module.exports = {
       }
     ],
     "object-shorthand": "error",
-    "no-console": "warn"
+    "no-console": "warn",
+    "@typescript-eslint/no-misused-promises": "off"
   },
 }
