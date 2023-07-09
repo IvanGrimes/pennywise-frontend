@@ -1,3 +1,4 @@
+import { sample } from 'effector';
 import { FunctionComponent, useEffect } from 'react';
 import { useMount } from 'shared/hooks';
 import { routes } from 'shared/routes';

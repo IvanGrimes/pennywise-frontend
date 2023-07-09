@@ -17,6 +17,7 @@ export type SessionCardProps = {
   onTerminate: () => void;
   onTerminateAll: () => void;
   showTerminateButton: boolean;
+  disabled: boolean;
 };
 
 type Nullable<T> = T | null;
@@ -46,6 +47,7 @@ export const SessionCard = ({
   onTerminate,
   onTerminateAll,
   showTerminateButton,
+  disabled,
 }: SessionCardProps) => {
   const { classes } = useStyles();
   const lastSeen = isCurrent ? 'now' : formatDate(updatedAt);
@@ -70,6 +72,7 @@ export const SessionCard = ({
           leftIcon={<IconHandStop size="0.75rem" />}
           fullWidth={false}
           onClick={isCurrent ? onTerminateAll : onTerminate}
+          disabled={disabled}
         >
           {isCurrent ? 'Terminate all other sessions' : 'Terminate'}
         </Button>

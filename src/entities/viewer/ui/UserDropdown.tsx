@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Menu } from 'shared/ui';
 import { IconSettings } from 'shared/icons';
 import { dropdownIconSize, dropdownIconStroke } from './const';
@@ -8,6 +8,7 @@ export type UserDropdownProps = {
   emailSlot: ReactNode;
   sessionsItemSlot: ReactNode;
   signOutItemSlot: ReactNode;
+  onMount: () => void;
 };
 
 export const UserDropdown = ({
@@ -15,8 +16,13 @@ export const UserDropdown = ({
   emailSlot,
   sessionsItemSlot,
   signOutItemSlot,
+  onMount,
 }: UserDropdownProps) => {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    onMount();
+  }, [onMount]);
 
   return (
     <Menu

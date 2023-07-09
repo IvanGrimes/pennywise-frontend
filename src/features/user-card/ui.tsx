@@ -4,34 +4,27 @@ import {
   UserDropdownCardSkeleton,
   viewerModel,
 } from 'entities/viewer';
-import { useEvent, useStore } from 'effector-react';
+import { useUnit } from 'effector-react';
 import { FetchError } from 'shared/ui';
-import { useEffect } from 'react';
-import { authModel } from 'entities/auth';
 
 export type UserCardProps = Pick<UserDropdownCardProps, 'active'>;
 
 export const UserCard = ({ active }: UserCardProps) => {
-  const isAuth = useStore(authModel.$isAuthed);
-  const me = useStore(viewerModel.$me);
-  const fetchMe = useEvent(viewerModel.effects.fetchMeFx);
-  const meLoading = useStore(viewerModel.effects.fetchMeFx.pending);
-  const meError = useStore(viewerModel.$meError);
+  const [me, loading, error, retry] = useUnit([
+    viewerModel.$me,
+    viewerModel.effects.fetchMeFx.pending,
+    viewerModel.$meError,
+    viewerModel.effects.fetchMeFx,
+  ]);
 
-  useEffect(() => {
-    if (!isAuth || me || meLoading || meError) return;
-
-    void fetchMe();
-  }, [fetchMe, isAuth, me, meLoading, meError]);
-
-  if (meError)
+  if (error)
     return (
-      <FetchError variant="inline" onRetry={fetchMe}>
+      <FetchError variant="inline" onRetry={retry}>
         Couldn&apos;t retrieve a user
       </FetchError>
     );
 
-  if (!me || meLoading) return <UserDropdownCardSkeleton />;
+  if (!me || loading) return <UserDropdownCardSkeleton />;
 
   return (
     <UserDropdownCard

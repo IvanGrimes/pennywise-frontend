@@ -10,8 +10,8 @@ import { IconDeviceDesktop } from 'shared/icons';
 import { useEvent, useStore } from 'effector-react';
 import { useEffect } from 'react';
 import { showErrorNotification } from 'shared/notifications';
-import { usePrevious } from '@mantine/hooks';
 import { FetchError } from 'shared/ui';
+import { model } from './model';
 
 const showError = () =>
   showErrorNotification({
@@ -21,18 +21,17 @@ const showError = () =>
 
 export const SessionManager = () => {
   const [opened, { open, close }] = useDisclosure(false);
-  const previousOpened = usePrevious(opened);
   const sessions = useStore(sessionModel.$sessions);
   const sessionsError = useStore(sessionModel.$sessionsError);
-  const fetchSessions = useEvent(sessionModel.effects.getAllFx);
+  const mounted = useEvent(model.events.mounted);
   const sessionsLoading = useStore(sessionModel.effects.getAllFx.pending);
+  const terminating = useStore(model.$terminating);
+  const onRetry = useEvent(sessionModel.effects.getAllFx);
   const terminate = useEvent(sessionModel.effects.terminateFx);
   const terminateAll = useEvent(sessionModel.effects.terminateAllFx);
   const handleTerminate = async (id: number) => {
     try {
       await terminate({ id });
-
-      await fetchSessions();
     } catch (e) {
       showError();
     }
@@ -40,8 +39,6 @@ export const SessionManager = () => {
   const handleTerminateAll = async () => {
     try {
       await terminateAll();
-
-      await fetchSessions();
     } catch (e) {
       showError();
     }
@@ -49,7 +46,7 @@ export const SessionManager = () => {
   const getContent = () => {
     if (sessionsError) {
       return (
-        <FetchError onRetry={fetchSessions}>
+        <FetchError onRetry={onRetry}>
           Couldn&apos;t retrieve sessions
         </FetchError>
       );
@@ -71,15 +68,16 @@ export const SessionManager = () => {
         onTerminate={() => handleTerminate(session.id)}
         onTerminateAll={handleTerminateAll}
         showTerminateButton={sessions.length > 1}
+        disabled={terminating}
       />
     ));
   };
 
   useEffect(() => {
-    if (!opened || previousOpened || sessionsLoading || sessionsError) return;
+    if (!opened) return;
 
-    void fetchSessions();
-  }, [fetchSessions, sessionsLoading, opened, sessionsError, previousOpened]);
+    mounted();
+  }, [opened, mounted]);
 
   return (
     <>
