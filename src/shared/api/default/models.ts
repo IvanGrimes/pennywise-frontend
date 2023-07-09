@@ -5,5 +5,6 @@ export type {
   SignInResponseDto,
   MeResponseDto,
   VerifyRequestDto,
+  ApiError,
+  TerminateRequestDto,
 } from 'generated/api';
-export { ApiError } from 'generated/api';

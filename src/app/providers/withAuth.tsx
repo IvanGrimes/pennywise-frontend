@@ -3,27 +3,19 @@ import { useMount } from 'shared/hooks';
 import { routes } from 'shared/routes';
 import { api } from 'shared/api';
 import axios from 'axios';
-import { useStore, useEvent } from 'effector-react';
+import { useEvent } from 'effector-react';
 import { useLocation } from 'react-router';
-import { authModel } from 'entities/auth';
 import { useNavigate } from 'react-router-dom';
-import { viewerModel } from '../../entities/viewer';
+import { authModel } from 'entities/auth';
+import { viewerModel } from 'entities/viewer';
 import { sessionModel } from 'entities/session';
 
 export const withAuth = (Component: FunctionComponent) => {
   const WrappedComponent = () => {
-    const token = useStore(authModel.$token);
-    const isAuthInit = useStore(authModel.$isAuthInit);
-    const setToken = useEvent(authModel.events.setToken);
     const location = useLocation();
     const navigate = useNavigate();
+    const tokenRefresh = useEvent(authModel.effects.tokenRefreshFx);
     const signOut = useEvent(authModel.effects.signOutFx);
-
-    useMount(() => {
-      if (token) return;
-
-      setToken(readAccessToken());
-    });
 
     useMount(() => {
       [
@@ -33,18 +25,6 @@ export const withAuth = (Component: FunctionComponent) => {
         sessionModel.$sessionsError,
       ].forEach((store) => store.reset(authModel.effects.signOutFx.doneData));
     });
-
-    useEffect(() => {
-      if (isAuthInit) return;
-
-      if (token) {
-        writeAccessToken(token);
-        api.setToken(token);
-      } else {
-        removeAccessToken();
-        api.setToken();
-      }
-    }, [isAuthInit, token]);
 
     useEffect(
       () =>
@@ -57,16 +37,10 @@ export const withAuth = (Component: FunctionComponent) => {
           }
 
           try {
-            const result = await api.auth.refresh();
-
-            setToken(result.accessToken);
-            api.setToken(result.accessToken);
+            const token = await tokenRefresh();
 
             if (e.config) {
-              e.config.headers.set(
-                'Authorization',
-                `Bearer ${result.accessToken}`
-              );
+              e.config.headers.set('Authorization', `Bearer ${token}`);
 
               return await axios.request(e.config);
             }
@@ -74,7 +48,6 @@ export const withAuth = (Component: FunctionComponent) => {
             queueMicrotask(async () => {
               await signOut();
 
-              removeAccessToken();
               navigate(routes.signIn);
             });
 
@@ -83,7 +56,7 @@ export const withAuth = (Component: FunctionComponent) => {
 
           throw e;
         }),
-      [location.pathname, navigate, setToken, signOut]
+      [location.pathname, navigate, signOut, tokenRefresh]
     );
 
     return <Component />;
@@ -91,17 +64,3 @@ export const withAuth = (Component: FunctionComponent) => {
 
   return WrappedComponent;
 };
-
-const key = 'ACCESS_TOKEN';
-
-function readAccessToken() {
-  return localStorage.getItem(key);
-}
-
-function writeAccessToken(value: string) {
-  localStorage.setItem(key, value);
-}
-
-function removeAccessToken() {
-  localStorage.removeItem(key);
-}
