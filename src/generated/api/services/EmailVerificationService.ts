@@ -27,6 +27,7 @@ export class EmailVerificationService {
             mediaType: 'application/json',
             errors: {
                 400: `Bad email verification token`,
+                404: `User not found`,
                 409: `Email already verified`,
                 410: `Email verification token expired`,
             },
@@ -42,6 +43,10 @@ export class EmailVerificationService {
         return this.httpRequest.request({
             method: 'POST',
             url: '/email-verification/resend',
+            errors: {
+                404: `User not found`,
+                409: `Email already verified`,
+            },
         });
     }
 

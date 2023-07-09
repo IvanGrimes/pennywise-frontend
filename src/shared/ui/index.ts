@@ -16,7 +16,6 @@ export {
   TypographyStylesProvider,
   Modal,
   ScrollArea,
-  createStyles,
   Skeleton,
 } from '@mantine/core';
 export type {
@@ -47,5 +46,6 @@ export * from './rem';
 export * from './Flex';
 export * from './FetchError';
 export * from './Text';
-export * from './ActionIcon.ts';
-export * from './Button.ts';
+export * from './ActionIcon';
+export * from './Button';
+export * from './createStyles';

@@ -1,11 +1,8 @@
 import { ReactNode } from 'react';
-import { Header as BaseHeader } from '@mantine/core';
-import {
-  StyledContainer,
-  StyledMenuList,
-  StyledMenuListItem,
-  StyledBurger,
-} from './Header.styled';
+import { Header as BaseHeader, Burger } from '@mantine/core';
+import { Container } from '../Container';
+import { Group } from '../Group';
+import { useStyles } from './Header.styles';
 import { Link } from '../Link';
 import { useDisclosure } from 'shared/hooks';
 import { Flex } from '../Flex';
@@ -29,30 +26,39 @@ export const Header = ({
   showMenu,
 }: HeaderProps) => {
   const [opened, { toggle }] = useDisclosure(false);
+  const { classes, cx } = useStyles();
 
   return (
     <BaseHeader height={60}>
-      <StyledContainer>
+      <Container className={classes.container}>
         <Flex align="center" gap={40}>
           {showMenu && (
-            <StyledBurger opened={opened} onClick={toggle} size="sm" />
+            <Burger
+              className={classes.burger}
+              opened={opened}
+              onClick={toggle}
+              size="sm"
+            />
           )}
           <div>logo</div>
           {showMenu && (
-            <StyledMenuList spacing={5}>
+            <Group className={classes.menuList} spacing={5}>
               {menuList.map((item) => (
-                <StyledMenuListItem
+                <div
+                  className={cx(
+                    classes.menuListItem,
+                    isMenuItemActive(item) && classes.menuListItemActive
+                  )}
                   key={item.label}
-                  active={isMenuItemActive(item)}
                 >
                   <Link href={item.href}>{item.label}</Link>
-                </StyledMenuListItem>
+                </div>
               ))}
-            </StyledMenuList>
+            </Group>
           )}
         </Flex>
         {viewerSlot}
-      </StyledContainer>
+      </Container>
     </BaseHeader>
   );
 };

@@ -13,6 +13,9 @@ export type { AllResponseDto } from './models/AllResponseDto';
 export type { ApiErrorResponseDto } from './models/ApiErrorResponseDto';
 export type { MeResponseDto } from './models/MeResponseDto';
 export type { RefreshTokenResponseDto } from './models/RefreshTokenResponseDto';
+export type { ResetPasswordResponseDto } from './models/ResetPasswordResponseDto';
+export type { SetPasswordRequestDto } from './models/SetPasswordRequestDto';
+export type { SetPasswordResponseDto } from './models/SetPasswordResponseDto';
 export type { SignInRequestDto } from './models/SignInRequestDto';
 export type { SignInResponseDto } from './models/SignInResponseDto';
 export type { SignOutResponseDto } from './models/SignOutResponseDto';
@@ -25,5 +28,6 @@ export type { VerifyResponseDto } from './models/VerifyResponseDto';
 
 export { AuthService } from './services/AuthService';
 export { EmailVerificationService } from './services/EmailVerificationService';
+export { ResetPasswordService } from './services/ResetPasswordService';
 export { SessionService } from './services/SessionService';
 export { UserService } from './services/UserService';
