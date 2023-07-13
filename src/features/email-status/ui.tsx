@@ -3,42 +3,36 @@ import {
   emailVerificationModel,
   ResendButton,
 } from 'entities/email-verification';
-import { useEvent, useStore } from 'effector-react';
 import { viewerModel } from 'entities/viewer';
-import { useEffect } from 'react';
+import { isApiError } from 'shared/api';
 import { showErrorNotification } from 'shared/notifications';
 
 export const EmailStatus = () => {
-  const me = useStore(viewerModel.$me);
-  const resendVerificationLink = useEvent(
-    emailVerificationModel.effects.resendFx
-  );
-  const resendError = useStore(emailVerificationModel.$resendError);
-  const isResendVerificationLinkLoading = useStore(
-    emailVerificationModel.effects.resendFx.pending
-  );
+  const me = viewerModel.api.useMeQuery();
+  const [resendMutation, resend] =
+    emailVerificationModel.api.useResendMutation();
+  const handleResend = async () => {
+    try {
+      await resendMutation().unwrap();
+    } catch (e) {
+      const message = isApiError(e) ? e.data.message : 'Unknown error';
 
-  useEffect(() => {
-    if (isResendVerificationLinkLoading || !resendError) return;
+      showErrorNotification({
+        title: 'Resend verification link',
+        message,
+      });
+    }
+  };
 
-    showErrorNotification({
-      title: 'Resend verification link',
-      message: resendError,
-    });
-  }, [isResendVerificationLinkLoading, resendError]);
-
-  if (!me) return null;
+  if (!me.data) return null;
 
   return (
     <>
       <BaseEmailStatus
-        email={me.email}
-        isVerified={me.isEmailVerified}
+        email={me.data.email}
+        isVerified={me.data.isEmailVerified}
         resendButtonSlot={
-          <ResendButton
-            onClick={resendVerificationLink}
-            loading={isResendVerificationLinkLoading}
-          />
+          <ResendButton onClick={handleResend} loading={resend.isLoading} />
         }
       />
     </>

@@ -1,10 +1,10 @@
 import { Auth } from 'entities/auth';
-import { AuthResetPassword } from 'features/reset-password';
+import { ResetPasswordForm } from 'features/reset-password/reset-password-form';
 
 export const ResetPassword = () => (
   <Auth
     titleSlot="Forgot your password?"
     subtitleSlot="Enter your email to get a reset link"
-    formSlot={<AuthResetPassword />}
+    formSlot={<ResetPasswordForm />}
   />
 );

@@ -4,32 +4,26 @@ import {
   UserDropdownCardSkeleton,
   viewerModel,
 } from 'entities/viewer';
-import { useUnit } from 'effector-react';
 import { FetchError } from 'shared/ui';
 
 export type UserCardProps = Pick<UserDropdownCardProps, 'active'>;
 
 export const UserCard = ({ active }: UserCardProps) => {
-  const [me, loading, error, retry] = useUnit([
-    viewerModel.$me,
-    viewerModel.effects.fetchMeFx.pending,
-    viewerModel.$meError,
-    viewerModel.effects.fetchMeFx,
-  ]);
+  const { error, isLoading, data, refetch } = viewerModel.api.useMeQuery();
 
   if (error)
     return (
-      <FetchError variant="inline" onRetry={retry}>
+      <FetchError variant="inline" onRetry={refetch}>
         Couldn&apos;t retrieve a user
       </FetchError>
     );
 
-  if (!me || loading) return <UserDropdownCardSkeleton />;
+  if (!data || isLoading) return <UserDropdownCardSkeleton />;
 
   return (
     <UserDropdownCard
-      firstName={me.firstName}
-      lastName={me.lastName}
+      firstName={data.firstName}
+      lastName={data.lastName}
       active={active}
     />
   );

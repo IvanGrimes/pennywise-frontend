@@ -1,3 +1,6 @@
+import { authModel } from 'entities/auth';
+import { isApiError } from 'shared/api';
+import { showErrorNotification } from 'shared/notifications';
 import {
   Button,
   TextInput,
@@ -6,20 +9,11 @@ import {
   Checkbox,
   Link,
 } from 'shared/ui';
-import { useEvent, useStore } from 'effector-react';
-import { useEffect } from 'react';
 import { useForm } from 'shared/form';
-import {
-  showErrorNotification,
-  cleanNotifications,
-} from 'shared/notifications';
 import { routes } from 'shared/routes';
-import { authModel } from 'entities/auth';
 
 export const AuthSignInByEmail = () => {
-  const signIn = useEvent(authModel.effects.signInFx);
-  const loading = useStore(authModel.effects.signInFx.pending);
-  const error = useStore(authModel.$signInError);
+  const [signIn, { isLoading }] = authModel.api.useSignInMutation();
   const form = useForm({
     initialValues: {
       email: '',
@@ -27,38 +21,26 @@ export const AuthSignInByEmail = () => {
       remember: true,
     },
   });
-  const handleSubmit = form.onSubmit(({ email, password, remember }) => {
+  const handleSubmit = form.onSubmit((values) => {
     const performRequest = async () => {
       try {
-        await signIn({ email, password, remember });
+        await signIn({ signInRequestDto: values }).unwrap();
       } catch (e) {
-        form.setErrors(authModel.$signInError.getState());
+        if (isApiError(e)) {
+          showErrorNotification({ title: 'Sign in', message: e.data.message });
+        }
       }
     };
 
     void performRequest();
   });
 
-  useEffect(() => {
-    const formError = error.message;
-
-    if (formError) {
-      showErrorNotification({
-        title: 'Sign In Error',
-        message: formError,
-      });
-    } else {
-      cleanNotifications();
-    }
-  }, [error.message]);
-
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
         label="Email"
         placeholder="you@mantine.dev"
-        error={error?.email}
-        disabled={loading}
+        disabled={isLoading}
         required
         {...form.getInputProps('email')}
       />
@@ -66,22 +48,21 @@ export const AuthSignInByEmail = () => {
         mt="md"
         label="Password"
         placeholder="Your password"
-        error={error?.password}
-        disabled={loading}
+        disabled={isLoading}
         required
         {...form.getInputProps('password')}
       />
       <Group position="apart" mt="lg">
         <Checkbox
           label="Remember me"
-          disabled={loading}
+          disabled={isLoading}
           {...form.getInputProps('remember', { type: 'checkbox' })}
         />
         <Link href={routes.resetPassword} size="sm">
           Forgot password?
         </Link>
       </Group>
-      <Button type="submit" mt="xl" loading={loading} fullWidth>
+      <Button type="submit" mt="xl" loading={isLoading} fullWidth>
         Sign in
       </Button>
     </form>

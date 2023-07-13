@@ -3,27 +3,23 @@ import {
   emailVerificationModel,
   EmailVerificationStatus,
 } from 'entities/email-verification';
-import { useEvent, useStore } from 'effector-react';
 import { useEffect } from 'react';
-import { showErrorNotification } from 'shared/notifications';
+import { isApiError } from 'shared/api';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { routes } from 'shared/routes';
 
 export const EmailVerification = () => {
-  const verifySuccess = useStore(emailVerificationModel.$verifySuccess);
-  const verifyError = useStore(emailVerificationModel.$verifyError);
-  const verifyLoading = useStore(
-    emailVerificationModel.effects.verifyFx.pending
-  );
-  const verify = useEvent(emailVerificationModel.effects.verifyFx);
+  const [verify, { error, isLoading }] =
+    emailVerificationModel.api.useVerifyMutation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const getStatus = () => {
-    if (!verifySuccess || verifyLoading) return EmailVerificationStatus.loading;
-    if (verifyError) return EmailVerificationStatus.fail;
+    if (isLoading) return EmailVerificationStatus.loading;
+    if (error) return EmailVerificationStatus.fail;
 
     return EmailVerificationStatus.success;
   };
+  const errorMessage = isApiError(error) ? error.data.message : 'Unknown error';
 
   useEffect(() => {
     const token = searchParams.get('token');
@@ -33,18 +29,10 @@ export const EmailVerification = () => {
       return;
     }
 
-    void verify({ token });
+    verify({ verifyRequestDto: { token } });
   }, [navigate, searchParams, verify]);
 
-  useEffect(() => {
-    if (verifyLoading || !verifyError) return;
-
-    showErrorNotification({
-      title: 'Email verification',
-      message: verifyError,
-      onClose: () => navigate(routes.main),
-    });
-  }, [verifyLoading, navigate, verifyError]);
-
-  return <BaseEmailVerification status={getStatus()} />;
+  return (
+    <BaseEmailVerification status={getStatus()} errorMessage={errorMessage} />
+  );
 };

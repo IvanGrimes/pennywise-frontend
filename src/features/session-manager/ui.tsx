@@ -4,15 +4,13 @@ import {
   SessionModal,
   sessionModel,
 } from 'entities/session';
+import { useEffect, useState } from 'react';
 import { useDisclosure } from 'shared/hooks';
 import { UserDropdownItem } from 'entities/viewer';
 import { IconDeviceDesktop } from 'shared/icons';
-import { useEvent, useStore } from 'effector-react';
-import { useEffect } from 'react';
 import { showErrorNotification } from 'shared/notifications';
 import { FetchError } from 'shared/ui';
-import { model } from './model';
-
+// @todo: refresh token
 const showError = () =>
   showErrorNotification({
     title: 'Sessions',
@@ -21,67 +19,81 @@ const showError = () =>
 
 export const SessionManager = () => {
   const [opened, { open, close }] = useDisclosure(false);
-  const sessions = useStore(sessionModel.$sessions);
-  const sessionsError = useStore(sessionModel.$sessionsError);
-  const mounted = useEvent(model.events.mounted);
-  const sessionsLoading = useStore(sessionModel.effects.getAllFx.pending);
-  const terminating = useStore(model.$terminating);
-  const onRetry = useEvent(sessionModel.effects.getAllFx);
-  const terminate = useEvent(sessionModel.effects.terminateFx);
-  const terminateAll = useEvent(sessionModel.effects.terminateAllFx);
+  const [wasOpened, setWasOpened] = useState(false);
+  const sessions = sessionModel.api.useAllQuery(undefined, {
+    skip: !wasOpened,
+  });
+  const [terminateMutate, terminate] = sessionModel.api.useTerminateMutation();
+  const [terminateAllMutate, terminateAll] =
+    sessionModel.api.useTerminateAllMutation();
+  const terminating = terminate.isLoading || terminateAll.isLoading;
+  const handleOpen = () => {
+    open();
+
+    if (wasOpened) sessions.refetch();
+  };
   const handleTerminate = async (id: number) => {
     try {
-      await terminate({ id });
+      await terminateMutate({ terminateRequestDto: { id } }).unwrap();
+
+      await sessions.refetch().unwrap();
     } catch (e) {
       showError();
     }
   };
   const handleTerminateAll = async () => {
     try {
-      await terminateAll();
+      await terminateAllMutate().unwrap();
+
+      await sessions.refetch().unwrap();
     } catch (e) {
       showError();
     }
   };
   const getContent = () => {
-    if (sessionsError) {
+    if (sessions.data) {
+      return sessions.data.map((session) => (
+        <SessionCard
+          key={session.id}
+          {...session}
+          onTerminate={() => handleTerminate(session.id)}
+          onTerminateAll={handleTerminateAll}
+          showTerminateButton={sessions.data ? sessions.data.length > 1 : false}
+          disabled={terminating}
+        />
+      ));
+    }
+
+    if (sessions.error) {
       return (
-        <FetchError onRetry={onRetry}>
+        <FetchError onRetry={sessions.refetch}>
           Couldn&apos;t retrieve sessions
         </FetchError>
       );
     }
 
-    if (sessionsLoading && !sessions.length)
-      return (
-        <div>
-          <SessionCardSkeleton />
-          <SessionCardSkeleton />
-          <SessionCardSkeleton />
-        </div>
-      );
-
-    return sessions.map((session) => (
-      <SessionCard
-        key={session.id}
-        {...session}
-        onTerminate={() => handleTerminate(session.id)}
-        onTerminateAll={handleTerminateAll}
-        showTerminateButton={sessions.length > 1}
-        disabled={terminating}
-      />
-    ));
+    return (
+      <div>
+        <SessionCardSkeleton />
+        <SessionCardSkeleton />
+        <SessionCardSkeleton />
+      </div>
+    );
   };
 
   useEffect(() => {
-    if (!opened) return;
+    if (wasOpened) return;
 
-    mounted();
-  }, [opened, mounted]);
+    setWasOpened(opened);
+  }, [opened, wasOpened]);
 
   return (
     <>
-      <UserDropdownItem Icon={IconDeviceDesktop} onClick={open} loading={false}>
+      <UserDropdownItem
+        Icon={IconDeviceDesktop}
+        onClick={handleOpen}
+        loading={false}
+      >
         Sessions
       </UserDropdownItem>
       <SessionModal opened={opened} onClose={close}>

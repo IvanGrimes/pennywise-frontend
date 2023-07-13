@@ -1,14 +1,12 @@
 import compose from 'compose-function';
 import { withRouter } from './withRouter';
-import { withAuth } from './withAuth';
 import { withThemeProvider } from './withThemeProvider';
 import { withNotifications } from './withNotifications';
-import { withAppModel } from './withAppModel';
+import { withStore } from './withStore';
 
 export const withProviders = compose(
+  withStore,
   withRouter,
-  withAuth,
   withThemeProvider,
-  withNotifications,
-  withAppModel
+  withNotifications
 );

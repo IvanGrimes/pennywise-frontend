@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 export type AuthProps = {
   titleSlot: ReactNode;
-  subtitleSlot: ReactNode;
+  subtitleSlot?: ReactNode;
   socialSlot?: ReactNode;
   formSlot: ReactNode;
 };
@@ -18,9 +18,11 @@ export const Auth = ({
     <Title align="center" sx={{ fontWeight: 900 }}>
       {titleSlot}
     </Title>
-    <Text color="dimmed" size="sm" align="center" mt={5}>
-      {subtitleSlot}
-    </Text>
+    {subtitleSlot && (
+      <Text color="dimmed" size="sm" align="center" mt={5}>
+        {subtitleSlot}
+      </Text>
+    )}
     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
       {socialSlot && (
         <>

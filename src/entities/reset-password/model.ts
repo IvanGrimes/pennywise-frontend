@@ -1,13 +1,3 @@
-import { api } from 'shared/api';
-import { createApiRequestModel } from 'shared/model';
+import { resetPasswordApi as api } from 'shared/api';
 
-const { $requestLoading, $requestSuccess, $requestError, requestFx } =
-  createApiRequestModel({
-    name: 'request',
-    request: api.resetPassword.request,
-    errorMessages: {},
-  });
-
-export { $requestLoading, $requestSuccess, $requestError };
-
-export const effects = { requestFx };
+export { api };

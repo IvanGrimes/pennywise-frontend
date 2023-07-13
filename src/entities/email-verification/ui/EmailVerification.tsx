@@ -3,6 +3,7 @@ import { IconCircleCheck, IconCircleX } from 'shared/icons';
 
 export type EmailVerificationProps = {
   status: EmailVerificationStatus;
+  errorMessage?: string;
 };
 
 export enum EmailVerificationStatus {
@@ -13,7 +14,10 @@ export enum EmailVerificationStatus {
 
 const iconSize = rem(48);
 
-export const EmailVerification = ({ status }: EmailVerificationProps) => {
+export const EmailVerification = ({
+  status,
+  errorMessage = 'Please, resend a verification link and try again.',
+}: EmailVerificationProps) => {
   const getContent = () => {
     switch (status) {
       case EmailVerificationStatus.loading:
@@ -35,10 +39,7 @@ export const EmailVerification = ({ status }: EmailVerificationProps) => {
         return (
           <>
             <IconCircleX color="red" size={iconSize} />
-            <Text mt={10}>
-              Something went wrong during verifying the email.
-            </Text>
-            <Text>Please, resend a verification link and try again.</Text>
+            <Text mt={10}>{errorMessage}</Text>
           </>
         );
     }
