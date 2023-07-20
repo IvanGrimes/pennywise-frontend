@@ -1,4 +1,5 @@
-import { useAppSelector } from 'shared/model.ts';
+import { useAppSelector } from 'shared/model';
+import { routes } from 'shared/routes';
 import { Header as BaseHeader, HeaderMenuListItem } from 'shared/ui';
 import { UserDropdown } from 'entities/viewer';
 import { useLocation } from 'react-router-dom';
@@ -10,8 +11,8 @@ import { SignOut } from 'features/auth/sign-out';
 import { useMemo } from 'react';
 
 const menuList: HeaderMenuListItem[] = [
-  { href: '#', label: 'Accounts' },
-  { href: '#', label: 'Transactions' },
+  { href: routes.accounts, label: 'Accounts' },
+  { href: routes.transactions, label: 'Transactions' },
   { href: '#', label: 'Analytics' },
 ];
 

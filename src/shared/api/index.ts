@@ -11,6 +11,19 @@ export { enhancedApi as emailVerificationApi } from 'generated/rtk-query/email-v
 export { enhancedApi as resetPasswordApi } from 'generated/rtk-query/reset-password';
 export { enhancedApi as sessionApi } from 'generated/rtk-query/session';
 export { enhancedApi as userApi } from 'generated/rtk-query/user';
+export {
+  enhancedApi as transactionsApi,
+  type TransactionType,
+} from 'generated/rtk-query/transactions';
+export {
+  enhancedApi as accountsApi,
+  type GetAccountsResponseDto,
+  type CreateAccountRequestDto,
+} from 'generated/rtk-query/accounts';
+export {
+  enhancedApi as categoriesApi,
+  type GetCategoriesResponseDto,
+} from 'generated/rtk-query/categories';
 export * from './isFetchBaseQueryError';
 export type {
   authTypes,

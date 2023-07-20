@@ -11,4 +11,14 @@ export {
   IconDeviceDesktop,
   IconHandStop,
   IconReload,
+  IconTrash,
+  IconPigMoney,
+  IconCreditCard,
+  IconBuildingBank,
+  IconCash,
+  IconCoins,
+  IconHomeDollar,
+  IconDiscount,
+  type TablerIconsProps as IconProps,
 } from '@tabler/icons-react';
+export { CheckIcon } from '@mantine/core';

@@ -4,11 +4,9 @@ export {
   PasswordInput,
   Checkbox,
   Anchor,
-  Paper,
   Title,
   Divider,
   Center,
-  Box,
   Avatar,
   Menu,
   UnstyledButton,
@@ -17,17 +15,22 @@ export {
   Modal,
   ScrollArea,
   Skeleton,
+  NativeSelect,
+  Select,
+  Popover,
+  Textarea,
+  useMantineTheme,
+  ColorSwatch,
+  Switch,
 } from '@mantine/core';
 export type {
   TextInputProps,
   PasswordInputProps,
   CheckboxProps,
   AnchorProps,
-  PaperProps,
   TitleProps,
   DividerProps,
   CenterProps,
-  BoxProps,
   AvatarProps,
   MenuProps,
   UnstyledButtonProps,
@@ -35,6 +38,12 @@ export type {
   ModalProps,
   ScrollAreaProps,
   SkeletonProps,
+  NativeSelectProps,
+  SelectProps,
+  PopoverProps,
+  TextareaProps,
+  ColorSwatchProps,
+  SwitchProps,
 } from '@mantine/core';
 
 export * from './Layout';
@@ -49,3 +58,10 @@ export * from './Text';
 export * from './ActionIcon';
 export * from './Button';
 export * from './createStyles';
+export * from './NumberInput';
+export * from './AmountInput';
+export * from './Paper';
+export * from './Box';
+export * from './AddEntityFormLayout';
+export * from './Card';
+export * from './EntityCard';

@@ -6,8 +6,22 @@ export type LinkProps = PropsWithChildren<
   Pick<AnchorProps, 'className' | 'sx' | 'size' | 'color'> & { href: string }
 >;
 
-export const Link = ({ href, sx, size, color, children }: LinkProps) => (
-  <Anchor to={href} sx={sx} size={size} color={color} component={RouterLink}>
+export const Link = ({
+  href,
+  sx,
+  size,
+  color,
+  children,
+  ...props
+}: LinkProps) => (
+  <Anchor
+    to={href}
+    sx={sx}
+    size={size}
+    color={color}
+    component={RouterLink}
+    {...props}
+  >
     {children}
   </Anchor>
 );

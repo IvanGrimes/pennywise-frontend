@@ -51,8 +51,8 @@ export const SessionManager = () => {
     }
   };
   const getContent = () => {
-    if (sessions.data) {
-      return sessions.data.map((session) => (
+    if (sessions.currentData) {
+      return sessions.currentData.map((session) => (
         <SessionCard
           key={session.id}
           {...session}

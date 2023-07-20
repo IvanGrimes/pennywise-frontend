@@ -11,9 +11,12 @@ const config: ConfigFile = {
         [getPath('email-verification')]: { filterEndpoints: (_, {path}) => path.includes('/email-verification/') },
         [getPath('session')]: { filterEndpoints: (_, {path}) => path.includes('/session/') },
         [getPath('reset-password')]: { filterEndpoints: (_, {path}) => path.includes('/reset-password/') },
+        [getPath('transactions')]: { filterEndpoints: (_, {path}) => path.includes('/transactions/') },
+        [getPath('accounts')]: { filterEndpoints: (_, {path}) => path.includes('/accounts/') },
+        [getPath('categories')]: { filterEndpoints: (_, {path}) => path.includes('/categories/') },
     },
     hooks: false,
-    tag: true
+    tag: true,
 }
 
 export default config
