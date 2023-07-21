@@ -3,7 +3,7 @@ import { routes } from 'shared/routes';
 import { EntityCard, Text, Title } from 'shared/ui';
 import { AccountType, AccountCurrency, AccountIconName } from '../model';
 import { AccountIcon } from './AccountIcon';
-import { currencySymbols } from '../const';
+import { currencySymbols, accountTypes } from '../const';
 
 export type AccountCardProps = {
   id: number;
@@ -31,7 +31,7 @@ export const AccountCard = ({
         {name}&nbsp;{isDefault && '(Default)'}
       </Title>
     </Group>
-    <Text color="dimmed">{type}</Text>
+    <Text color="dimmed">{accountTypes[type]}</Text>
     <Title order={5}>
       {balance}&nbsp;{currencySymbols[currency]}
     </Title>

@@ -19,6 +19,8 @@ export {
   IconCoins,
   IconHomeDollar,
   IconDiscount,
+  IconEdit,
+  IconX,
+  IconCheck as CheckIcon,
   type TablerIconsProps as IconProps,
 } from '@tabler/icons-react';
-export { CheckIcon } from '@mantine/core';

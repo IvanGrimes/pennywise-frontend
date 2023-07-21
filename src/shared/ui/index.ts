@@ -65,3 +65,4 @@ export * from './Box';
 export * from './AddEntityFormLayout';
 export * from './Card';
 export * from './EntityCard';
+export * from './EditableEntityProperty';

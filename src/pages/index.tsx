@@ -13,6 +13,7 @@ const SetPassword = lazy(() => import('./SetPassword'));
 const Transactions = lazy(() => import('./Transactions'));
 const Transaction = lazy(() => import('./Transaction'));
 const Accounts = lazy(() => import('./Accounts'));
+const Account = lazy(() => import('./Account'));
 
 export const Routing = () => (
   <Layout headerSlot={<Header />}>
@@ -26,6 +27,7 @@ export const Routing = () => (
       <Route path={routes.transactions} element={<Transactions />} />
       <Route path={routes.transaction()} element={<Transaction />} />
       <Route path={routes.accounts} element={<Accounts />} />
+      <Route path={routes.account()} element={<Account />} />
     </Routes>
   </Layout>
 );

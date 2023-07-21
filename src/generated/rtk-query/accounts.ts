@@ -131,5 +131,22 @@ export type GetAccountsResponseDto = {
   currency: "rub" | "usd" | "eur" | "gbp" | "aed";
 };
 export type UpdateAccountByIdRequestDto = {
-  name: string;
+  name?: string;
+  type?:
+    | "cash"
+    | "saving"
+    | "checking"
+    | "debit"
+    | "credit"
+    | "loan"
+    | "deposit";
+  icon?:
+    | "savings"
+    | "card"
+    | "checking"
+    | "cash"
+    | "coins"
+    | "mortgage"
+    | "deposit";
+  isDefault?: boolean;
 };

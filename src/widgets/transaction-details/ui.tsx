@@ -4,10 +4,10 @@ import {
   TransactionDetails as BaseTransactionDetails,
   TransactionDetailsProps as BaseTransactionDetailsProps,
 } from 'entities/transactions';
-import { TransactionAccountSelect } from 'features/transaction-account-select';
-import { TransactionDeleteButton } from 'features/transaction-delete-button';
-import { TransactionTypeSelect } from 'features/transaction-type-select';
-import { CategorySelect } from 'features/category-select';
+import { TransactionAccountSelect } from 'features/transactions/transaction-account-select';
+import { TransactionDeleteButton } from 'features/transactions/transaction-delete-button';
+import { TransactionTypeSelect } from 'features/transactions/transaction-type-select';
+import { CategorySelect } from 'features/categories/category-select';
 
 export type TransactionDetailsProps = Omit<
   BaseTransactionDetailsProps,

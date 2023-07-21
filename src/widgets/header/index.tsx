@@ -5,7 +5,7 @@ import { UserDropdown } from 'entities/viewer';
 import { useLocation } from 'react-router-dom';
 import { authModel } from 'entities/auth';
 import { UserCard } from 'features/user-card';
-import { EmailStatus } from 'features/email-status';
+import { EmailStatus } from 'features/email/email-status';
 import { SessionManager } from 'features/session-manager';
 import { SignOut } from 'features/auth/sign-out';
 import { useMemo } from 'react';

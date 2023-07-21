@@ -88,7 +88,7 @@ export type DeleteTransactionByIdApiArg = {
   id: number;
 };
 export type GetTransactionsByAccountApiResponse =
-  /** status 200  */ GetTransactionsByAccountResponseDto;
+  /** status 200  */ GetTransactionsByAccountResponseDto[];
 export type GetTransactionsByAccountApiArg = {
   id: number;
 };

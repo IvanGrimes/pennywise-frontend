@@ -1,3 +1,7 @@
-import { transactionsApi, type TransactionType } from 'shared/api';
+import {
+  transactionsApi,
+  type TransactionType,
+  type GetTransactionsResponseDto,
+} from 'shared/api';
 
-export { transactionsApi as api, TransactionType };
+export { transactionsApi as api, TransactionType, GetTransactionsResponseDto };

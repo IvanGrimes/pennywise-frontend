@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createStyles } from './createStyles';
 import { Card } from './Card';
 
-export type EntityCardProps = PropsWithChildren<{ href: string }>;
+export type EntityCardProps = PropsWithChildren<{ href?: string }>;
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -27,17 +27,20 @@ const useStyles = createStyles((theme) => ({
 
 export const EntityCard = ({ href, children }: EntityCardProps) => {
   const { classes } = useStyles();
+  const props = {
+    className: classes.card,
+    p: 'md',
+    radius: 'md',
+    withBorder: true,
+  };
 
-  return (
-    <Card
-      className={classes.card}
-      to={href}
-      p="md"
-      radius="md"
-      withBorder
-      component={Link}
-    >
-      {children}
-    </Card>
-  );
+  if (href) {
+    return (
+      <Card to={href} component={Link} {...props}>
+        {children}
+      </Card>
+    );
+  }
+
+  return <Card {...props}>{children}</Card>;
 };

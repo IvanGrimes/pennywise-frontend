@@ -14,11 +14,13 @@ export { enhancedApi as userApi } from 'generated/rtk-query/user';
 export {
   enhancedApi as transactionsApi,
   type TransactionType,
+  type GetTransactionsResponseDto,
 } from 'generated/rtk-query/transactions';
 export {
   enhancedApi as accountsApi,
   type GetAccountsResponseDto,
   type CreateAccountRequestDto,
+  type UpdateAccountByIdRequestDto,
 } from 'generated/rtk-query/accounts';
 export {
   enhancedApi as categoriesApi,

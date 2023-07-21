@@ -1,4 +1,4 @@
-import { Card, createStyles } from 'shared/ui';
+import { EntityCard } from 'shared/ui';
 import { ReactNode } from 'react';
 import { TransactionType } from '../model';
 import { TransactionAmount } from './TransactionAmount';
@@ -17,15 +17,6 @@ export type TransactionDetailsProps = {
   deleteButtonSlot: ReactNode;
 };
 
-// @todo: move to shared/ui
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    overflow: 'visible',
-  },
-}));
-
 export const TransactionDetails = ({
   typeSlot,
   accountSlot,
@@ -36,22 +27,18 @@ export const TransactionDetails = ({
   currencySymbol,
   descriptionSlot,
   deleteButtonSlot,
-}: TransactionDetailsProps) => {
-  const { classes } = useStyles();
-
-  return (
-    <Card className={classes.card} p="md" radius="md" withBorder>
-      <TransactionDate date={date} />
-      <TransactionAmount
-        type={type}
-        amount={amount}
-        currencySymbol={currencySymbol}
-      />
-      {categorySlot}
-      {typeSlot}
-      {accountSlot}
-      {descriptionSlot}
-      {deleteButtonSlot}
-    </Card>
-  );
-};
+}: TransactionDetailsProps) => (
+  <EntityCard>
+    <TransactionDate date={date} />
+    <TransactionAmount
+      type={type}
+      amount={amount}
+      currencySymbol={currencySymbol}
+    />
+    {categorySlot}
+    {typeSlot}
+    {accountSlot}
+    {descriptionSlot}
+    {deleteButtonSlot}
+  </EntityCard>
+);
