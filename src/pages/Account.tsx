@@ -17,23 +17,29 @@ const Account = () => {
   );
   const account = accountsModel.api.useGetAccountsQuery(undefined, {
     skip: !id,
-    selectFromResult: ({ currentData, isFetching }) => ({
-      currentData: currentData?.find((item) => item.id === Number(id)),
-      isFetching,
-    }),
+    selectFromResult: ({ currentData, isUninitialized, isFetching }) => {
+      const accountById = currentData?.find((item) => item.id === Number(id));
+
+      return {
+        currentData: accountById,
+        isFetching,
+        isNotFound: isUninitialized ? false : !isFetching && !accountById,
+      };
+    },
   });
 
   useEffect(() => {
-    if (id) return;
+    if (id && !account.isNotFound) return;
 
     navigate(routes.accounts);
-  }, [id, navigate]);
+  }, [account.isNotFound, id, navigate]);
 
   if (
     !transactions.currentData ||
     (!transactions.currentData && transactions.isFetching) ||
     !account.currentData ||
-    (!account.currentData && account.isFetching)
+    (!account.currentData && account.isFetching) ||
+    account.isNotFound
   )
     return;
 

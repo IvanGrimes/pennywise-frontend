@@ -1,5 +1,5 @@
 import { usePrevious } from '@mantine/hooks';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   EditableEntityProperty,
   EntityCard,
