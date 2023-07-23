@@ -1,3 +1,4 @@
+import { DeleteAccountButton } from 'features/accounts/delete-account-button';
 import { useCallback } from 'react';
 import { EntityCard, Text, Title, Switch, TextInput } from 'shared/ui';
 import {
@@ -112,6 +113,8 @@ export const AccountDetails = ({
             <Text>Default: {values.isDefault ? 'yes' : 'no'}</Text>
           )}
         </EditableEntity.Property>
+
+        <DeleteAccountButton id={id} />
       </EntityCard>
     </EditableEntity>
   );

@@ -1,25 +1,23 @@
-import { transactionsModel } from 'entities/transactions';
+import { accountsModel } from 'entities/accounts';
 import { useNavigate } from 'react-router-dom';
 import { isApiError } from 'shared/api';
 import { showErrorNotification } from 'shared/notifications';
 import { routes } from 'shared/routes';
 import { DeleteEntityButton } from 'shared/ui';
 
-export type DeleteTransactionButtonProps = { id: number };
+export type DeleteAccountButtonProps = { id: number };
 
-export const DeleteTransactionButton = ({
-  id,
-}: DeleteTransactionButtonProps) => {
-  const [deleteTransactionMutation, deleteTransaction] =
-    transactionsModel.api.useDeleteTransactionByIdMutation();
+export const DeleteAccountButton = ({ id }: DeleteAccountButtonProps) => {
+  const [deleteAccountMutation, deleteAccount] =
+    accountsModel.api.useDeleteAccountByIdMutation();
   const navigate = useNavigate();
   const handleDelete = async () => {
     try {
-      await deleteTransactionMutation({ id }).unwrap();
+      await deleteAccountMutation({ id }).unwrap();
 
       navigate(routes.transactions);
     } catch (e) {
-      const title = 'Transaction delete';
+      const title = 'Account delete';
 
       if (isApiError(e)) {
         showErrorNotification({
@@ -37,9 +35,15 @@ export const DeleteTransactionButton = ({
 
   return (
     <DeleteEntityButton
-      confirmText="Are you sure you want to delete a transaction?"
+      confirmText={
+        <>
+          Are you sure you want to delete an account?
+          <br />
+          All transactions will be deleted.
+        </>
+      }
       onConfirm={handleDelete}
-      loading={deleteTransaction.isLoading}
+      loading={deleteAccount.isLoading}
     />
   );
 };

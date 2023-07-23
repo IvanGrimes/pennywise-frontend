@@ -16,7 +16,6 @@ export {
   Skeleton,
   NativeSelect,
   Select,
-  Popover,
   Textarea,
   useMantineTheme,
   ColorSwatch,
@@ -38,7 +37,6 @@ export type {
   SkeletonProps,
   NativeSelectProps,
   SelectProps,
-  PopoverProps,
   TextareaProps,
   ColorSwatchProps,
   SwitchProps,
@@ -66,3 +64,5 @@ export * from './EntityCard';
 export * from './Modal';
 export * from './AddEntityModal';
 export * from './EditableEntity';
+export * from './Popover';
+export * from './DeleteEntityButton';
