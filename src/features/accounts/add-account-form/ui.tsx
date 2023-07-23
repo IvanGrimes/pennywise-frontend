@@ -7,9 +7,9 @@ import {
   currencySymbols,
 } from 'entities/accounts';
 import { TextInput, Switch, Button, AddEntityFormLayout } from 'shared/ui';
-import { useForm } from 'shared/form.ts';
+import { useForm } from 'shared/form';
 
-export type AddAccountFormProps = {};
+export type AddAccountFormProps = { onSuccess?: () => void };
 
 type FormValues = {
   name: string;
@@ -20,7 +20,7 @@ type FormValues = {
   isDefault: boolean;
 };
 
-export const AddAccountForm = () => {
+export const AddAccountForm = ({ onSuccess }: AddAccountFormProps) => {
   const form = useForm<FormValues>({
     initialValues: {
       name: '',
@@ -40,7 +40,9 @@ export const AddAccountForm = () => {
 
       form.reset();
 
-      await getAccountsQuery();
+      await getAccountsQuery().unwrap();
+
+      onSuccess?.();
     } catch (e) {
       // @todo: handle errors
     }
@@ -70,6 +72,7 @@ export const AddAccountForm = () => {
             {...form.getInputProps('currency')}
           />
           <AccountBalanceInput
+            label="Balance"
             currencySymbol={currencySymbols[form.values.currency]}
             disabled={createAccount.isLoading}
             {...form.getInputProps('balance')}

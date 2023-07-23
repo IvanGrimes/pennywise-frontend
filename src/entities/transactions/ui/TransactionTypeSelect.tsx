@@ -1,13 +1,13 @@
 import { ChangeEventHandler } from 'react';
-import { FormInputProps } from 'shared/form';
 import { useInputState } from 'shared/hooks';
 import { NativeSelect } from 'shared/ui';
 import { TransactionType } from '../model';
 
-export type TransactionTypeSelectProps = FormInputProps & {
+export type TransactionTypeSelectProps = {
   value: TransactionType;
   onChange: (value: TransactionType) => void;
-  disabled: boolean;
+  disabled?: boolean;
+  label?: string;
 };
 
 const types: TransactionType[] = ['income', 'outcome'];
@@ -29,7 +29,6 @@ export const TransactionTypeSelect = ({
 
   return (
     <NativeSelect
-      label="Transaction type"
       data={types}
       value={value}
       onChange={handleChange}

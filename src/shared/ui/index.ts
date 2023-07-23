@@ -12,7 +12,6 @@ export {
   UnstyledButton,
   Loader,
   TypographyStylesProvider,
-  Modal,
   ScrollArea,
   Skeleton,
   NativeSelect,
@@ -35,7 +34,6 @@ export type {
   MenuProps,
   UnstyledButtonProps,
   LoaderProps,
-  ModalProps,
   ScrollAreaProps,
   SkeletonProps,
   NativeSelectProps,
@@ -65,4 +63,6 @@ export * from './Box';
 export * from './AddEntityFormLayout';
 export * from './Card';
 export * from './EntityCard';
-export * from './EditableEntityProperty';
+export * from './Modal';
+export * from './AddEntityModal';
+export * from './EditableEntity';

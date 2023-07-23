@@ -1,5 +1,4 @@
 import { FormEventHandler, ReactNode } from 'react';
-import { Paper } from './Paper';
 import { Flex } from './Flex';
 import { Box } from './Box';
 
@@ -14,10 +13,10 @@ export const AddEntityFormLayout = ({
   inputsSlot,
   submitButtonSlot,
 }: AddEntityFormLayoutProps) => (
-  <Paper p="md" component="form" onSubmit={onSubmit} withBorder>
+  <form onSubmit={onSubmit}>
     <Flex direction="column" gap="sm">
       {inputsSlot}
     </Flex>
     <Box mt="lg">{submitButtonSlot}</Box>
-  </Paper>
+  </form>
 );

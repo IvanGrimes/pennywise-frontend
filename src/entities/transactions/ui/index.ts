@@ -5,3 +5,4 @@ export * from './TransactionDetailsActionButton';
 export * from './TransactionTypeSelect';
 export * from './TransactionAmountInput';
 export * from './TransactionDescriptionInput';
+export * from './TransactionAmount';

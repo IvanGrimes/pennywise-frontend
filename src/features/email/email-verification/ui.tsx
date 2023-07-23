@@ -5,14 +5,14 @@ import {
 } from 'entities/email-verification';
 import { useEffect } from 'react';
 import { isApiError } from 'shared/api';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { routes } from 'shared/routes.ts';
 
-export const EmailVerification = () => {
-  const [verify, { error, isLoading }] =
+export type EmailVerificationProps = {
+  token: string;
+};
+
+export const EmailVerification = ({ token }: EmailVerificationProps) => {
+  const [verify, { error, isLoading, isUninitialized }] =
     emailVerificationModel.api.useVerifyMutation();
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const getStatus = () => {
     if (isLoading) return EmailVerificationStatus.loading;
     if (error) return EmailVerificationStatus.fail;
@@ -22,15 +22,10 @@ export const EmailVerification = () => {
   const errorMessage = isApiError(error) ? error.data.message : 'Unknown error';
 
   useEffect(() => {
-    const token = searchParams.get('token');
-
-    if (!token) {
-      navigate(routes.main);
-      return;
-    }
+    if (!isUninitialized) return;
 
     verify({ verifyRequestDto: { token } });
-  }, [navigate, searchParams, verify]);
+  }, [verify, token, isUninitialized]);
 
   return (
     <BaseEmailVerification status={getStatus()} errorMessage={errorMessage} />

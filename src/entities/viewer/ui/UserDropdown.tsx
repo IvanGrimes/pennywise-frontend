@@ -1,20 +1,17 @@
-import { ReactNode, useState } from 'react';
+import { PropsWithChildren, ReactNode, useState } from 'react';
 import { Menu } from 'shared/ui';
 import { IconSettings } from 'shared/icons';
 import { dropdownIconSize, dropdownIconStroke } from './const';
 
-export type UserDropdownProps = {
-  userCardSlot: (props: { active: boolean }) => ReactNode;
-  emailSlot: ReactNode;
-  sessionsItemSlot: ReactNode;
-  signOutItemSlot: ReactNode;
-};
+export type UserDropdownProps = PropsWithChildren<{
+  cardSlot: (props: { active: boolean }) => ReactNode;
+  topSlot: ReactNode;
+}>;
 
 export const UserDropdown = ({
-  userCardSlot,
-  emailSlot,
-  sessionsItemSlot,
-  signOutItemSlot,
+  cardSlot,
+  topSlot,
+  children,
 }: UserDropdownProps) => {
   const [open, setOpen] = useState(false);
 
@@ -27,9 +24,9 @@ export const UserDropdown = ({
       onOpen={() => setOpen(true)}
       keepMounted
     >
-      {userCardSlot({ active: open })}
+      {cardSlot({ active: open })}
       <Menu.Dropdown>
-        <Menu.Label>{emailSlot}</Menu.Label>
+        <Menu.Label>{topSlot}</Menu.Label>
         <Menu.Divider />
         <Menu.Label>Settings</Menu.Label>
         <Menu.Item
@@ -39,8 +36,7 @@ export const UserDropdown = ({
         >
           Account settings
         </Menu.Item>
-        {sessionsItemSlot}
-        {signOutItemSlot}
+        {children}
       </Menu.Dropdown>
     </Menu>
   );

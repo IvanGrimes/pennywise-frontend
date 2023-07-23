@@ -5,16 +5,16 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isApiError } from 'shared/api';
-import { IconTrash } from 'shared/icons.ts';
+import { IconTrash } from 'shared/icons';
 import { showErrorNotification } from 'shared/notifications';
-import { routes } from 'shared/routes.ts';
+import { routes } from 'shared/routes';
 import { Button, Flex, Popover, Text } from 'shared/ui';
 
-export type TransactionDeleteButtonProps = { id: number };
+export type DeleteTransactionButtonProps = { id: number };
 
-export const TransactionDeleteButton = ({
+export const DeleteTransactionButton = ({
   id,
-}: TransactionDeleteButtonProps) => {
+}: DeleteTransactionButtonProps) => {
   const [deleteTransactionMutation, deleteTransaction] =
     transactionsModel.api.useDeleteTransactionByIdMutation();
   const navigate = useNavigate();

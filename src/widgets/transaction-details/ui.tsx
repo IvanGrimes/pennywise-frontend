@@ -1,13 +1,18 @@
 import { accountsModel, currencySymbols } from 'entities/accounts';
-import { categoriesModel, useCategorySelect } from 'entities/categories';
+import { categoriesModel, CategoryTitle } from 'entities/categories';
 import {
+  TransactionAmountInput,
   TransactionDetails as BaseTransactionDetails,
   TransactionDetailsProps as BaseTransactionDetailsProps,
+  TransactionTypeSelect,
+  transactionsModel,
+  TransactionAmount,
 } from 'entities/transactions';
-import { TransactionAccountSelect } from 'features/transactions/transaction-account-select';
-import { TransactionDeleteButton } from 'features/transactions/transaction-delete-button';
-import { TransactionTypeSelect } from 'features/transactions/transaction-type-select';
+import { AccountSelect } from 'features/accounts/account-select';
+import { DeleteTransactionButton } from 'features/transactions/delete-transaction-button';
 import { CategorySelect } from 'features/categories/category-select';
+import { routes } from 'shared/routes';
+import { Link, Text, getEditableEntity } from 'shared/ui';
 
 export type TransactionDetailsProps = Omit<
   BaseTransactionDetailsProps,
@@ -18,45 +23,151 @@ export type TransactionDetailsProps = Omit<
   | 'accountName'
   | 'categorySlot'
   | 'currencySymbol'
+  | 'amountSlot'
 > & {
   id: number;
+  amount: number;
+  type: transactionsModel.TransactionType;
   accountId: number;
   category: categoriesModel.GetCategoriesResponseDto;
 };
 
+type EditableValues = Pick<
+  TransactionDetailsProps,
+  'amount' | 'type' | 'accountId' | 'category'
+>;
+
+const { EditableEntity } = getEditableEntity<EditableValues>();
+
 export const TransactionDetails = ({
   id,
-  type,
   description,
-  amount,
   date,
+  amount,
+  type,
   accountId,
   category,
 }: TransactionDetailsProps) => {
-  const categorySelect = useCategorySelect(category.name);
-  const account = accountsModel.api.useGetAccountsQuery(undefined, {
+  const categories = categoriesModel.api.useGetCategoriesQuery();
+  const accounts = accountsModel.api.useGetAccountsQuery(undefined, {
     selectFromResult: ({ currentData, isFetching }) => ({
-      currentData: currentData?.find((item) => item.id === accountId),
+      currentAccount: currentData?.find((item) => item.id === accountId),
+      currentData,
       isFetching,
     }),
   });
+  const [updateTransactionMutation, updateTransaction] =
+    transactionsModel.api.useUpdateTransactionByIdMutation();
+  const handleSave = async (values: EditableValues) => {
+    updateTransactionMutation({
+      id,
+      updateTransactionByIdRequestDto: {
+        type: values.type,
+        amount: values.amount,
+        accountId: values.accountId,
+        categoryId: values.category.id,
+      },
+    });
+  };
 
-  if (!account.currentData || (account.isFetching && !account.currentData))
+  if (
+    !accounts.currentData ||
+    !accounts.currentAccount ||
+    (accounts.isFetching && !accounts.currentData)
+  )
     return null;
 
+  const currencySymbol = currencySymbols[accounts.currentAccount.currency];
+
   return (
-    <BaseTransactionDetails
-      type={type}
-      description={description}
-      amount={amount}
-      currencySymbol={currencySymbols[account.currentData.currency]}
-      date={date}
-      categorySlot={<CategorySelect categorySelect={categorySelect} />}
-      typeSlot={<TransactionTypeSelect transactionId={id} type={type} />}
-      accountSlot={
-        <TransactionAccountSelect transactionId={id} accountId={accountId} />
-      }
-      deleteButtonSlot={<TransactionDeleteButton id={id} />}
-    />
+    <EditableEntity
+      values={{ amount, accountId, category, type }}
+      disabled={updateTransaction.isLoading}
+      onSave={handleSave}
+      onCancel={() => {}}
+    >
+      <BaseTransactionDetails
+        date={date}
+        description={description}
+        accountSlot={
+          <EditableEntity.Property
+            property="accountId"
+            editableSlot={({ onChange, disabled }) => (
+              <AccountSelect
+                initialAccountId={accountId}
+                onChange={(nextAccountId) => {
+                  if (!nextAccountId) return;
+
+                  onChange(nextAccountId);
+                }}
+                disabled={disabled}
+              />
+            )}
+          >
+            {({ values }) => (
+              <Link href={routes.account(values.accountId)}>
+                {accounts.currentAccount?.name}{' '}
+                {accounts.currentAccount?.balance}
+              </Link>
+            )}
+          </EditableEntity.Property>
+        }
+        categorySlot={
+          <EditableEntity.Property
+            property="category"
+            editableSlot={({ onChange, disabled }) => (
+              <CategorySelect
+                initialCategoryId={category.id}
+                onChange={(nextCategoryId) => {
+                  const nextCategory = categories.currentData?.find(
+                    (item) => item.id === nextCategoryId
+                  );
+
+                  if (!nextCategory) return;
+
+                  onChange(nextCategory);
+                }}
+                disabled={disabled}
+              />
+            )}
+          >
+            {({ values }) => (
+              <CategoryTitle
+                name={values.category.name}
+                color={values.category.color}
+              />
+            )}
+          </EditableEntity.Property>
+        }
+        amountSlot={
+          <EditableEntity.Property
+            property="amount"
+            editableSlot={(props) => (
+              <TransactionAmountInput
+                currencySymbol={currencySymbol}
+                {...props}
+              />
+            )}
+          >
+            {({ values }) => (
+              <TransactionAmount
+                type={values.type}
+                amount={values.amount}
+                currencySymbol={currencySymbol}
+              />
+            )}
+          </EditableEntity.Property>
+        }
+        typeSlot={
+          <EditableEntity.Property
+            property="type"
+            editableSlot={(props) => <TransactionTypeSelect {...props} />}
+          >
+            {({ values }) => <Text>{values.type}</Text>}
+          </EditableEntity.Property>
+        }
+        deleteButtonSlot={<DeleteTransactionButton id={id} />}
+      />
+    </EditableEntity>
   );
 };

@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { routes } from 'shared/routes';
 import { withPrivateGuard } from './utils/withPrivateGuard';
-import { AccountDetails } from 'features/accounts/account-details';
+import { AccountDetails } from 'widgets/account-details';
 
 const Account = () => {
   const { id } = useParams();

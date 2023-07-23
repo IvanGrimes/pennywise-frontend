@@ -5,7 +5,7 @@ import {
   PayloadAction,
 } from '@reduxjs/toolkit';
 import { authModel } from 'entities/auth';
-import { signOutThunk } from '../sign-out';
+import { signOutThunk } from '../../user-dropdown/sign-out';
 import {
   appInitEvent,
   refreshTokenFail,

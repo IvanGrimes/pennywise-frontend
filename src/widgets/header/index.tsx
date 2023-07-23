@@ -1,14 +1,14 @@
+import { useMemo } from 'react';
 import { useAppSelector } from 'shared/model';
 import { routes } from 'shared/routes';
 import { Header as BaseHeader, HeaderMenuListItem } from 'shared/ui';
 import { UserDropdown } from 'entities/viewer';
 import { useLocation } from 'react-router-dom';
 import { authModel } from 'entities/auth';
-import { UserCard } from 'features/user-card';
+import { UserCard } from 'features/user-dropdown/user-card';
 import { EmailStatus } from 'features/email/email-status';
-import { SessionManager } from 'features/session-manager';
-import { SignOut } from 'features/auth/sign-out';
-import { useMemo } from 'react';
+import { SignOut } from 'features/user-dropdown/sign-out';
+import { SessionManager } from './ui';
 
 const menuList: HeaderMenuListItem[] = [
   { href: routes.accounts, label: 'Accounts' },
@@ -22,11 +22,12 @@ export const Header = () => {
   const userDropdown = useMemo(
     () => (
       <UserDropdown
-        userCardSlot={({ active }) => <UserCard active={active} />}
-        emailSlot={<EmailStatus />}
-        sessionsItemSlot={<SessionManager />}
-        signOutItemSlot={<SignOut />}
-      />
+        cardSlot={({ active }) => <UserCard active={active} />}
+        topSlot={<EmailStatus />}
+      >
+        <SessionManager />
+        <SignOut />
+      </UserDropdown>
     ),
     []
   );

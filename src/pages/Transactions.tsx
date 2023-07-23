@@ -1,6 +1,6 @@
 import { transactionsModel } from 'entities/transactions';
-import { Box } from 'shared/ui';
-import { AddTransaction } from 'widgets/add-transaction';
+import { Box, Button, Group } from 'shared/ui';
+import { AddTransactionModal } from 'widgets/add-transaction-modal';
 import { TransactionList } from 'widgets/transaction-list';
 import { withPrivateGuard } from './utils/withPrivateGuard';
 
@@ -9,7 +9,7 @@ const TransactionsPage = () => {
 
   return (
     <>
-      <AddTransaction />
+      <AddTransactionModal />
       <Box mt={32}>
         <TransactionList
           list={transactionList.currentData}

@@ -1,93 +1,61 @@
-import {
-  AccountSelect,
-  accountsModel,
-  currencySymbols,
-} from 'entities/accounts';
+import { currencySymbols, accountsModel } from 'entities/accounts';
 import {
   TransactionTypeSelect,
   TransactionAmountInput,
   TransactionDescriptionInput,
   transactionsModel,
 } from 'entities/transactions';
-import { ReactNode, useEffect } from 'react';
-import { useForm } from 'shared/form.ts';
-import { Paper, Button, AddEntityFormLayout } from 'shared/ui';
+import { ReactNode } from 'react';
+import { useForm } from 'shared/form';
+import { Button, AddEntityFormLayout } from 'shared/ui';
 
 export type AddTransactionFormProps = {
+  accountId: number | null;
   categoryId: number | null;
+  accountSelectSlot: (props: { loading: boolean }) => ReactNode;
   categorySelectSlot: (props: { loading: boolean }) => ReactNode;
-  noAccountsSlot: ReactNode;
+  onSuccess?: () => void;
+  currency: accountsModel.AccountCurrency;
 };
 
 export const AddTransactionForm = ({
+  accountId,
+  accountSelectSlot,
   categoryId,
   categorySelectSlot,
-  noAccountsSlot,
+  currency,
+  onSuccess,
 }: AddTransactionFormProps) => {
   const form = useForm({
     initialValues: {
       type: 'income',
-      accountId: '',
       amount: 0,
       description: '',
     },
   });
-  const accounts = accountsModel.api.useGetAccountsQuery();
-  const currentAccount = accounts.data?.find(
-    (item) => item.id === Number(form.values.accountId)
-  );
   const [createTransactionMutate, createTransaction] =
     transactionsModel.api.useCreateTransactionMutation();
   const handleSubmit = form.onSubmit(async (values) => {
     try {
-      if (!categoryId) return;
+      if (!categoryId || !accountId) return;
 
       await createTransactionMutate({
         createTransactionRequestDto: {
           ...values,
           categoryId,
+          accountId,
           type: values.type as transactionsModel.TransactionType,
-          accountId: Number(values.accountId),
         },
       }).unwrap();
 
       form.reset();
 
-      await accounts.refetch().unwrap();
+      onSuccess?.();
     } catch (e) {
       // @todo: add handling
       console.log([e]);
     }
   });
-
-  useEffect(() => {
-    if (
-      form.values.accountId ||
-      accounts.isLoading ||
-      !accounts.data ||
-      (accounts.data && !accounts.data.length)
-    )
-      return;
-
-    form.setValues({ accountId: String(accounts.data[0].id) });
-  }, [accounts.data, accounts.isLoading, form]);
-
-  if (
-    (accounts.isFetching && !accounts.currentData) ||
-    !accounts.currentData ||
-    !currentAccount
-  ) {
-    // @todo: add skeleton
-    return <>Loading</>;
-  }
-
-  if (!accounts.currentData.length) {
-    return (
-      <Paper p="md" withBorder>
-        {noAccountsSlot}
-      </Paper>
-    );
-  }
 
   return (
     <AddEntityFormLayout
@@ -96,18 +64,14 @@ export const AddTransactionForm = ({
         <>
           {categorySelectSlot({ loading: createTransaction.isLoading })}
           <TransactionTypeSelect
+            label="Type"
             disabled={createTransaction.isLoading}
             {...form.getInputProps('type')}
           />
-          <AccountSelect
-            disabled={createTransaction.isLoading}
-            currentAccountBalance={currentAccount.balance}
-            currentAccountCurrency={currentAccount.currency}
-            accounts={accounts.data ?? []}
-            {...form.getInputProps('accountId')}
-          />
+          {accountSelectSlot({ loading: createTransaction.isLoading })}
           <TransactionAmountInput
-            currencySymbol={currencySymbols[currentAccount.currency]}
+            label="Amount"
+            currencySymbol={currencySymbols[currency]}
             disabled={createTransaction.isLoading}
             {...form.getInputProps('amount')}
           />

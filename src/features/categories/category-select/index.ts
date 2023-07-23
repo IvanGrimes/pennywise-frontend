@@ -1,1 +1,4 @@
-export * from 'features/categories/category-select/ui.tsx';
+import * as categorySelectModel from './model';
+
+export * from './ui';
+export { categorySelectModel };

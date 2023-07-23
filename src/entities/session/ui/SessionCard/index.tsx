@@ -1,5 +1,5 @@
-import { Text, Button, rem } from 'shared/ui';
-import { IconHandStop } from 'shared/icons';
+import { ReactNode } from 'react';
+import { Text, rem } from 'shared/ui';
 import { useStyles } from './index.styles';
 import { getSpacedStringOrFallback, formatDate } from './utils';
 import { Skeleton } from '@mantine/core';
@@ -14,10 +14,7 @@ export type SessionCardProps = {
   location: Nullable<string>;
   isCurrent: boolean;
   updatedAt: string;
-  onTerminate: () => void;
-  onTerminateAll: () => void;
-  showTerminateButton: boolean;
-  disabled: boolean;
+  actionsSlot: ReactNode;
 };
 
 type Nullable<T> = T | null;
@@ -44,10 +41,7 @@ export const SessionCard = ({
   location,
   updatedAt,
   isCurrent,
-  onTerminate,
-  onTerminateAll,
-  showTerminateButton,
-  disabled,
+  actionsSlot,
 }: SessionCardProps) => {
   const { classes } = useStyles();
   const lastSeen = isCurrent ? 'now' : formatDate(updatedAt);
@@ -62,21 +56,7 @@ export const SessionCard = ({
       <Text fz="sm" color="dimmed">
         {getSpacedStringOrFallback(location)} &#8226; {lastSeen}
       </Text>
-      {showTerminateButton && (
-        <Button
-          className={classes.button}
-          variant="outline"
-          color="red"
-          size="xs"
-          mt={8}
-          leftIcon={<IconHandStop size="0.75rem" />}
-          fullWidth={false}
-          onClick={isCurrent ? onTerminateAll : onTerminate}
-          disabled={disabled}
-        >
-          {isCurrent ? 'Terminate all other sessions' : 'Terminate'}
-        </Button>
-      )}
+      {actionsSlot}
     </div>
   );
 };
