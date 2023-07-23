@@ -1,10 +1,11 @@
-import { FormInputProps } from 'shared/form';
 import { NumberInput } from './NumberInput';
 
-export type AmountInputProps = FormInputProps & {
+export type AmountInputProps = {
   currencySymbol: string;
   disabled?: boolean;
   label?: string;
+  onChange: (value: number) => void;
+  value: number;
 };
 
 export const AmountInput = ({ currencySymbol, ...props }: AmountInputProps) => (

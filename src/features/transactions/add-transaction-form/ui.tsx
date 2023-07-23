@@ -76,6 +76,7 @@ export const AddTransactionForm = ({
             {...form.getInputProps('amount')}
           />
           <TransactionDescriptionInput
+            label="Description"
             disabled={createTransaction.isLoading}
             {...form.getInputProps('description')}
           />

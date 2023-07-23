@@ -1,12 +1,12 @@
 import { NativeSelect, NativeSelectProps } from '@mantine/core';
-import { FormInputProps } from 'shared/form';
 import { AccountType } from '../model';
 
-export type AccountTypeSelectProps = Pick<NativeSelectProps, 'size'> &
-  FormInputProps & {
-    label?: string;
-    disabled?: boolean;
-  };
+export type AccountTypeSelectProps = Pick<NativeSelectProps, 'size'> & {
+  label?: string;
+  disabled?: boolean;
+  value: AccountType;
+  onChange: (value: AccountType) => void;
+};
 
 const accountTypes: { value: AccountType; label: string }[] = [
   { value: 'cash', label: 'Cash' },
@@ -22,6 +22,6 @@ export const AccountTypeSelect = (props: AccountTypeSelectProps) => (
   <NativeSelect
     data={accountTypes}
     {...props}
-    onChange={(ev) => props.onChange(ev.target.value)}
+    onChange={(ev) => props.onChange(ev.target.value as AccountType)}
   />
 );

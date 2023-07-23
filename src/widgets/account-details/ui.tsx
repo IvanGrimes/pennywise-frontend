@@ -37,7 +37,6 @@ export const AccountDetails = ({
     accountsModel.api.useUpdateAccountByIdMutation();
   const handleSave = useCallback(
     async (values: EditableValues) => {
-      console.log(values);
       try {
         await updateAccountMutation({
           id,

@@ -1,5 +1,4 @@
 import { ChangeEventHandler } from 'react';
-import { useInputState } from 'shared/hooks';
 import { NativeSelect } from 'shared/ui';
 import { TransactionType } from '../model';
 
@@ -11,9 +10,6 @@ export type TransactionTypeSelectProps = {
 };
 
 const types: TransactionType[] = ['income', 'outcome'];
-
-export const useTransactionTypeSelect = (initialValue = types[0]) =>
-  useInputState(initialValue);
 
 export const TransactionTypeSelect = ({
   value,

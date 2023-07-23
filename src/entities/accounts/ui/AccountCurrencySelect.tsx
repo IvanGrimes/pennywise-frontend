@@ -1,9 +1,10 @@
 import { NativeSelect } from '@mantine/core';
 import { currencySymbols } from '../const';
 import { AccountCurrency } from '../model';
-import { FormInputProps } from 'shared/form';
 
-export type AccountCurrencySelectProps = FormInputProps & {
+export type AccountCurrencySelectProps = {
+  value: AccountCurrency;
+  onChange: (value: AccountCurrency) => void;
   disabled?: boolean;
 };
 
@@ -15,6 +16,14 @@ const accountCurrencies: { value: AccountCurrency; label: string }[] = [
   { value: 'gbp', label: `Great Britain Pound ${currencySymbols.gbp}` },
 ];
 
-export const AccountCurrencySelect = (props: AccountCurrencySelectProps) => (
-  <NativeSelect label="Currency" data={accountCurrencies} {...props} />
+export const AccountCurrencySelect = ({
+  onChange,
+  ...props
+}: AccountCurrencySelectProps) => (
+  <NativeSelect
+    label="Currency"
+    data={accountCurrencies}
+    onChange={(ev) => onChange(ev.target.value as AccountCurrency)}
+    {...props}
+  />
 );

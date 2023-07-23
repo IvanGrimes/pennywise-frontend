@@ -1,5 +1,5 @@
 import { transactionsModel } from 'entities/transactions';
-import { Box, Button, Group } from 'shared/ui';
+import { Box } from 'shared/ui';
 import { AddTransactionModal } from 'widgets/add-transaction-modal';
 import { TransactionList } from 'widgets/transaction-list';
 import { withPrivateGuard } from './utils/withPrivateGuard';

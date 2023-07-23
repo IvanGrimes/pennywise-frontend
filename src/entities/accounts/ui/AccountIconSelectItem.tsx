@@ -1,12 +1,13 @@
 import { ComponentPropsWithoutRef, forwardRef, ReactNode } from 'react';
 import { Group, Text } from 'shared/ui';
+import { AccountIconName } from '../model';
 
 export type AccountIconSelectItemProps = ComponentPropsWithoutRef<'div'> &
   AccountIconSelectItemOption;
 
 export type AccountIconSelectItemOption = {
-  label: string;
-  value: string;
+  label: AccountIconName;
+  value: AccountIconName;
   icon: ReactNode;
 };
 

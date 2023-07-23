@@ -1,4 +1,3 @@
-import { FormInputProps } from 'shared/form';
 import { Select, SelectProps } from 'shared/ui';
 import { AccountIcon, accountIconNames } from './AccountIcon';
 import {
@@ -6,10 +5,11 @@ import {
   AccountIconSelectItem,
 } from './AccountIconSelectItem';
 
-export type AccountIconSelectProps = Pick<SelectProps, 'size'> &
-  FormInputProps & {
-    disabled?: boolean;
-  };
+export type AccountIconSelectProps = Pick<SelectProps, 'size'> & {
+  value: AccountIconSelectItemOption['value'];
+  onChange: (value: AccountIconSelectItemOption['value']) => void;
+  disabled?: boolean;
+};
 
 const accountIcons = accountIconNames.map<AccountIconSelectItemOption>(
   (name) => ({
