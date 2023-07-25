@@ -1,8 +1,9 @@
 import { AddAccountForm } from 'features/accounts/add-account-form';
-import { AddEntityModal, useAddEntityModal } from 'shared/ui';
+import { useModal } from 'shared/hooks';
+import { AddEntityModal } from 'shared/ui';
 
 export const AddAccountModal = () => {
-  const modal = useAddEntityModal();
+  const modal = useModal();
 
   return (
     <AddEntityModal title="New account" buttonText="Add account" {...modal}>

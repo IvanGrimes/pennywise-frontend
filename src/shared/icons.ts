@@ -23,5 +23,6 @@ export {
   IconX,
   IconCheck as CheckIcon,
   IconPlus,
+  IconTag,
   type TablerIconsProps as IconProps,
 } from '@tabler/icons-react';

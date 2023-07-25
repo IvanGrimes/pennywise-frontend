@@ -5,7 +5,7 @@ import { dropdownIconSize, dropdownIconStroke } from './const';
 export type UserDropdownItemProps = PropsWithChildren<{
   Icon: ComponentType<{ size: string; stroke: number }>;
   onClick: () => void;
-  loading: boolean;
+  loading?: boolean;
 }>;
 
 export const UserDropdownItem = ({

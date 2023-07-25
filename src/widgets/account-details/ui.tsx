@@ -3,8 +3,6 @@ import { useCallback } from 'react';
 import { EntityCard, Text, Title, Switch, TextInput } from 'shared/ui';
 import {
   accountsModel,
-  accountTypes,
-  currencySymbols,
   AccountIcon,
   AccountTypeSelect,
   AccountIconSelect,
@@ -79,7 +77,7 @@ export const AccountDetails = ({
         </EditableEntity.Property>
 
         <Text>
-          {balance} {currencySymbols[currency]}
+          {balance} {accountsModel.currencySymbol[currency]}
         </Text>
 
         <EditableEntity.Property
@@ -87,7 +85,7 @@ export const AccountDetails = ({
           editableSlot={(props) => <AccountTypeSelect size="xs" {...props} />}
         >
           {({ values }) => (
-            <Text color="dimmed">{accountTypes[values.type]}</Text>
+            <Text color="dimmed">{accountsModel.accountType[values.type]}</Text>
           )}
         </EditableEntity.Property>
 

@@ -7,17 +7,17 @@ import { useAppDispatch, useAppSelector } from 'shared/model';
 import { changeCategoryId, selectCategoryId } from './model';
 
 export type CategorySelectProps = {
-  creatable?: boolean;
   disabled?: boolean;
   onChange?: (value: number | null) => void;
   initialCategoryId: number | undefined;
+  onCreate?: (name: string) => void;
 };
 
 export const CategorySelect = ({
   disabled,
   onChange,
   initialCategoryId,
-  creatable = true,
+  onCreate,
 }: CategorySelectProps) => {
   const categories = categoriesModel.api.useGetCategoriesQuery();
   const categoryId = useAppSelector(selectCategoryId);
@@ -58,13 +58,8 @@ export const CategorySelect = ({
       data={categories.currentData}
       value={String(categoryId ?? initialCategoryId)}
       onChange={handleChange}
-      onCreate={
-        creatable
-          ? () => {
-              // @todo: open add category modal
-            }
-          : undefined
-      }
+      onCreate={onCreate}
+      creatable={!!onCreate}
       disabled={categories.isLoading || disabled}
     />
   );

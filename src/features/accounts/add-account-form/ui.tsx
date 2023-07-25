@@ -4,7 +4,6 @@ import {
   AccountIconSelect,
   accountsModel,
   AccountTypeSelect,
-  currencySymbols,
 } from 'entities/accounts';
 import { TextInput, Switch, Button, AddEntityFormLayout } from 'shared/ui';
 import { useForm } from 'shared/form';
@@ -73,7 +72,7 @@ export const AddAccountForm = ({ onSuccess }: AddAccountFormProps) => {
           />
           <AccountBalanceInput
             label="Balance"
-            currencySymbol={currencySymbols[form.values.currency]}
+            currencySymbol={accountsModel.currencySymbol[form.values.currency]}
             disabled={createAccount.isLoading}
             {...form.getInputProps('balance')}
           />

@@ -1,4 +1,4 @@
-import { currencySymbols, accountsModel } from 'entities/accounts';
+import { accountsModel } from 'entities/accounts';
 import {
   TransactionTypeSelect,
   TransactionAmountInput,
@@ -71,7 +71,7 @@ export const AddTransactionForm = ({
           {accountSelectSlot({ loading: createTransaction.isLoading })}
           <TransactionAmountInput
             label="Amount"
-            currencySymbol={currencySymbols[currency]}
+            currencySymbol={accountsModel.currencySymbol[currency]}
             disabled={createTransaction.isLoading}
             {...form.getInputProps('amount')}
           />

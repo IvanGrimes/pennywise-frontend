@@ -1,4 +1,4 @@
-import { accountsModel, currencySymbols } from 'entities/accounts';
+import { accountsModel } from 'entities/accounts';
 import { categoriesModel, CategoryTitle } from 'entities/categories';
 import { TransactionCard, transactionsModel } from 'entities/transactions';
 import { routes } from 'shared/routes';
@@ -41,7 +41,6 @@ export const TransactionList = (props: TransactionListProps) => {
   )
     return <>Loading</>;
 
-  // @todo: group features by slice
   // @todo: add pagination
   return (
     <div>
@@ -60,7 +59,7 @@ export const TransactionList = (props: TransactionListProps) => {
               type={transaction.type}
               accountName={account.name}
               amount={transaction.amount}
-              currencySymbol={currencySymbols[account.currency]}
+              currencySymbol={accountsModel.currencySymbol[account.currency]}
               description={transaction.description}
               categorySlot={<CategoryTitle {...category} />}
             />

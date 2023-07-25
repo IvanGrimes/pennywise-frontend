@@ -4,8 +4,8 @@ import {
   SessionModal,
   sessionModel,
 } from 'entities/session';
-import { TerminateAllSessionsButton } from 'features/session/terminate-all-sessions-button';
-import { TerminateSessionButton } from 'features/session/terminate-session-button';
+import { TerminateAllSessionsButton } from 'features/session/terminate-all-sessions';
+import { TerminateSessionButton } from 'features/session/terminate-session';
 import { useEffect, useState } from 'react';
 import { useDisclosure } from 'shared/hooks';
 import { UserDropdownItem } from 'entities/viewer';
@@ -69,11 +69,7 @@ export const SessionManager = () => {
 
   return (
     <>
-      <UserDropdownItem
-        Icon={IconDeviceDesktop}
-        onClick={handleOpen}
-        loading={false}
-      >
+      <UserDropdownItem Icon={IconDeviceDesktop} onClick={handleOpen}>
         Sessions
       </UserDropdownItem>
       <SessionModal opened={opened} onClose={close}>

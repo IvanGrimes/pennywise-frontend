@@ -1,4 +1,4 @@
-import { Modal, rem, ScrollArea } from 'shared/ui';
+import { Modal } from 'shared/ui';
 import { PropsWithChildren } from 'react';
 
 export type SessionModalProps = PropsWithChildren<{
@@ -11,14 +11,5 @@ export const SessionModal = ({
   onClose,
   children,
 }: SessionModalProps) => (
-  <Modal.Root opened={opened} onClose={onClose}>
-    <Modal.Overlay />
-    <Modal.Content scrollAreaComponent={ScrollArea.Autosize}>
-      <Modal.Header>
-        <Modal.Title sx={{ fontSize: rem(20) }}>Sessions</Modal.Title>
-        <Modal.CloseButton />
-      </Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
-    </Modal.Content>
-  </Modal.Root>
+    <Modal title="Sessions" opened={opened} onClose={onClose}>{children}</Modal>
 );

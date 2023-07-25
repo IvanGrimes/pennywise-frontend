@@ -8,7 +8,7 @@ import { authModel } from 'entities/auth';
 import { UserCard } from 'features/user-dropdown/user-card';
 import { EmailStatus } from 'features/email/email-status';
 import { SignOut } from 'features/user-dropdown/sign-out';
-import { SessionManager } from './ui';
+import { SessionManager, CategoryList } from './ui';
 
 const menuList: HeaderMenuListItem[] = [
   { href: routes.accounts, label: 'Accounts' },
@@ -25,6 +25,7 @@ export const Header = () => {
         cardSlot={({ active }) => <UserCard active={active} />}
         topSlot={<EmailStatus />}
       >
+        <CategoryList />
         <SessionManager />
         <SignOut />
       </UserDropdown>

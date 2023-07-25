@@ -68,7 +68,7 @@ export const SetPasswordForm = () => {
   });
 
   // @todo: autoComplete new password
-  // @todo: suggest an update password in password manage
+  // @todo: suggest to save password in password manager
   return (
     <form onSubmit={handleSubmit}>
       <PasswordInput

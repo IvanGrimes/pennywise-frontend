@@ -1,1 +1,1 @@
-export * from 'widgets/account-list/ui.tsx';
+export * from 'widgets/account-list/ui';

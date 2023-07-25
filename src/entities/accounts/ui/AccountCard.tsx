@@ -1,9 +1,14 @@
 import { Group } from '@mantine/core';
 import { routes } from 'shared/routes';
 import { EntityCard, Text, Title } from 'shared/ui';
-import { AccountType, AccountCurrency, AccountIconName } from '../model';
+import {
+  AccountType,
+  AccountCurrency,
+  AccountIconName,
+  accountType,
+  currencySymbol,
+} from '../model';
 import { AccountIcon } from './AccountIcon';
-import { currencySymbols, accountTypes } from '../const';
 
 export type AccountCardProps = {
   id: number;
@@ -31,9 +36,9 @@ export const AccountCard = ({
         {name}&nbsp;{isDefault && '(Default)'}
       </Title>
     </Group>
-    <Text color="dimmed">{accountTypes[type]}</Text>
+    <Text color="dimmed">{accountType[type]}</Text>
     <Title order={5}>
-      {balance}&nbsp;{currencySymbols[currency]}
+      {balance}&nbsp;{currencySymbol[currency]}
     </Title>
   </EntityCard>
 );

@@ -1,49 +1,30 @@
-import { useMantineTheme, Group, Box } from '@mantine/core';
-import { useState } from 'react';
+import { Group, Box } from '@mantine/core';
 import { rem } from 'shared/ui';
 import { CheckIcon } from 'shared/icons';
 import { CategorySwatch } from './CategorySwatch';
+import { CategoryColor, categoryColorKeys } from '../model';
 
-export type CategoryColorPickerProps = ReturnType<
-  typeof useCategoryColorPicker
-> & { name: string; disabled?: boolean };
-
-export const useCategoryColorPicker = () => {
-  const theme = useMantineTheme();
-  const colorKeys = Object.keys(theme.colors);
-  const initialState = colorKeys[0];
-  const [selected, setSelected] = useState(initialState);
-  const handleSelect = (color: string) => setSelected(color);
-  const handleReset = () => {
-    setSelected(initialState);
-
-    return initialState;
-  };
-
-  return {
-    selected,
-    onSelect: handleSelect,
-    reset: handleReset,
-  };
+export type CategoryColorPickerProps = {
+  value: CategoryColor;
+  onChange: (value: CategoryColor) => void;
+  disabled?: boolean;
 };
 
 export const CategoryColorPicker = ({
-  selected,
-  onSelect,
-  name,
   disabled,
+  value,
+  onChange,
+  ...props
 }: CategoryColorPickerProps) => {
-  const theme = useMantineTheme();
-  const colorKeys = Object.keys(theme.colors);
-  const swatches = colorKeys.map((color) => (
+  const swatches = categoryColorKeys.map((color) => (
     <CategorySwatch
       key={color}
       color={color}
-      onClick={() => onSelect(color)}
+      onClick={() => onChange(color)}
       disabled={disabled}
       component="button"
     >
-      {selected === color && <CheckIcon width={rem(10)} />}
+      {value === color && <CheckIcon width={rem(10)} />}
     </CategorySwatch>
   ));
 
@@ -53,9 +34,9 @@ export const CategoryColorPicker = ({
       <Box
         sx={{ display: 'none', visibility: 'hidden' }}
         type="radio"
-        name={name}
-        value={selected}
+        value={value}
         component="input"
+        {...props}
       />
     </Group>
   );

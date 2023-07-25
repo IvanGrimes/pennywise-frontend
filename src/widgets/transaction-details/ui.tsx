@@ -1,4 +1,4 @@
-import { accountsModel, currencySymbols } from 'entities/accounts';
+import { accountsModel } from 'entities/accounts';
 import { categoriesModel, CategoryTitle } from 'entities/categories';
 import {
   TransactionAmountInput,
@@ -9,8 +9,10 @@ import {
   TransactionAmount,
 } from 'entities/transactions';
 import { AccountSelect } from 'features/accounts/account-select';
-import { DeleteTransactionButton } from 'features/transactions/delete-transaction-button';
+import { addCategoryModalModel } from 'features/categories/add-category-modal';
+import { DeleteTransactionButton } from 'features/transactions/delete-transaction';
 import { CategorySelect } from 'features/categories/category-select';
+import { useAppDispatch } from 'shared/model.ts';
 import { routes } from 'shared/routes';
 import { Link, Text, getEditableEntity } from 'shared/ui';
 
@@ -58,16 +60,31 @@ export const TransactionDetails = ({
   });
   const [updateTransactionMutation, updateTransaction] =
     transactionsModel.api.useUpdateTransactionByIdMutation();
+  const dispatch = useAppDispatch();
+  const handleCreateCategory = (name: string) => {
+    dispatch(addCategoryModalModel.changeName(name));
+    dispatch(addCategoryModalModel.open());
+  };
   const handleSave = async (values: EditableValues) => {
-    updateTransactionMutation({
-      id,
-      updateTransactionByIdRequestDto: {
-        type: values.type,
-        amount: values.amount,
-        accountId: values.accountId,
-        categoryId: values.category.id,
-      },
-    });
+    try {
+      await updateTransactionMutation({
+        id,
+        updateTransactionByIdRequestDto: {
+          type: values.type,
+          amount: values.amount,
+          accountId: values.accountId,
+          categoryId: values.category.id,
+        },
+      }).unwrap();
+
+      if (accountId !== values.accountId) {
+        accounts.refetch();
+      }
+    } catch (e) {
+      // @todo: handle error
+      console.log(e);
+      throw e;
+    }
   };
 
   if (
@@ -77,7 +94,8 @@ export const TransactionDetails = ({
   )
     return null;
 
-  const currencySymbol = currencySymbols[accounts.currentAccount.currency];
+  const currencySymbol =
+    accountsModel.currencySymbol[accounts.currentAccount.currency];
 
   return (
     <EditableEntity
@@ -127,6 +145,7 @@ export const TransactionDetails = ({
 
                   onChange(nextCategory);
                 }}
+                onCreate={handleCreateCategory}
                 disabled={disabled}
               />
             )}

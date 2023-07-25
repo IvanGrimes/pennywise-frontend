@@ -40,6 +40,7 @@ export type {
   TextareaProps,
   ColorSwatchProps,
   SwitchProps,
+  DefaultMantineColor,
 } from '@mantine/core';
 
 export * from './Layout';
@@ -66,3 +67,4 @@ export * from './AddEntityModal';
 export * from './EditableEntity';
 export * from './Popover';
 export * from './DeleteEntityButton';
+export * from './AddEntityButton';

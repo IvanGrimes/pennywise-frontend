@@ -1,8 +1,7 @@
-import { currencySymbols } from './const';
-import { GetAccountsResponseDto } from './model';
+import { GetAccountsResponseDto, currencySymbol } from './model';
 
 export const formatAccountBalance = ({
   balance,
   currency,
 }: Pick<GetAccountsResponseDto, 'balance' | 'currency'>) =>
-  `${balance} ${currencySymbols[currency]}`;
+  `${balance} ${currencySymbol[currency]}`;

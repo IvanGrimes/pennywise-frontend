@@ -1,6 +1,5 @@
 import { NativeSelect } from '@mantine/core';
-import { currencySymbols } from '../const';
-import { AccountCurrency } from '../model';
+import { AccountCurrency, currencySymbol } from '../model';
 
 export type AccountCurrencySelectProps = {
   value: AccountCurrency;
@@ -9,11 +8,11 @@ export type AccountCurrencySelectProps = {
 };
 
 const accountCurrencies: { value: AccountCurrency; label: string }[] = [
-  { value: 'rub', label: `Russian Ruble ${currencySymbols.rub}` },
-  { value: 'usd', label: `US Dollar ${currencySymbols.usd}` },
-  { value: 'eur', label: `Euro ${currencySymbols.eur}` },
-  { value: 'aed', label: `Arab Emirates Dirham ${currencySymbols.aed}` },
-  { value: 'gbp', label: `Great Britain Pound ${currencySymbols.gbp}` },
+  { value: 'rub', label: `Russian Ruble ${currencySymbol.rub}` },
+  { value: 'usd', label: `US Dollar ${currencySymbol.usd}` },
+  { value: 'eur', label: `Euro ${currencySymbol.eur}` },
+  { value: 'aed', label: `Arab Emirates Dirham ${currencySymbol.aed}` },
+  { value: 'gbp', label: `Great Britain Pound ${currencySymbol.gbp}` },
 ];
 
 export const AccountCurrencySelect = ({

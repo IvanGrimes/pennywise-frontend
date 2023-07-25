@@ -4,25 +4,50 @@ import {
   AccountSelect,
   accountSelectModel,
 } from 'features/accounts/account-select';
+import { addCategoryModalModel } from 'features/categories/add-category-modal';
 import { AddTransactionForm } from 'features/transactions/add-transaction-form';
 import {
   CategorySelect,
   categorySelectModel,
 } from 'features/categories/category-select';
-import { useAppSelector } from 'shared/model';
-import { AddEntityModal, Paper, useAddEntityModal } from 'shared/ui';
+import { useEffect, useRef } from 'react';
+import { useModal } from 'shared/hooks';
+import { useAppDispatch, useAppSelector } from 'shared/model';
+import { AddEntityModal, Paper } from 'shared/ui';
 
 export const AddTransactionModal = () => {
-  const modal = useAddEntityModal();
+  const modal = useModal();
   const categoryId = useAppSelector(categorySelectModel.selectCategoryId);
   const categories = categoriesModel.api.useGetCategoriesQuery();
   const accountId = useAppSelector(accountSelectModel.selectAccountId);
   const accounts = accountsModel.api.useGetAccountsQuery();
+  const isAddCategoryModalOpen = useAppSelector(
+    addCategoryModalModel.selectAddCategoryFormOpened
+  );
+  const dispatch = useAppDispatch();
+  const shouldReopenAddTransactionModalRef = useRef(false);
   const handleSuccess = () => {
     modal.close();
 
     accounts.refetch();
   };
+  const handleCreateCategory = (name: string) => {
+    modal.close();
+    dispatch(addCategoryModalModel.changeName(name));
+    dispatch(addCategoryModalModel.open());
+    shouldReopenAddTransactionModalRef.current = true;
+  };
+
+  useEffect(() => {
+    if (
+      shouldReopenAddTransactionModalRef.current &&
+      !isAddCategoryModalOpen &&
+      !modal.opened
+    ) {
+      shouldReopenAddTransactionModalRef.current = false;
+      modal.open();
+    }
+  }, [isAddCategoryModalOpen, modal]);
 
   if (
     !categories.currentData ||
@@ -60,6 +85,7 @@ export const AddTransactionModal = () => {
         categorySelectSlot={({ loading }) => (
           <CategorySelect
             initialCategoryId={categories.currentData?.[0]?.id}
+            onCreate={handleCreateCategory}
             disabled={loading}
           />
         )}
