@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
   categoriesModel,
   CategoryColorPicker,
@@ -9,6 +10,7 @@ export type CategoryDetailsProps = {
   category: categoriesModel.GetCategoriesResponseDto;
   opened: boolean;
   onClose: () => void;
+  bottomSlot?: ReactNode;
 };
 
 type EditableValues = { name: string; color: categoriesModel.CategoryColor };
@@ -19,6 +21,7 @@ export const CategoryDetails = ({
   opened,
   onClose,
   category,
+  bottomSlot,
 }: CategoryDetailsProps) => (
   <Modal title="Category details" opened={opened} onClose={onClose}>
     <EditableEntity
@@ -45,5 +48,6 @@ export const CategoryDetails = ({
         {({ values }) => <CategorySwatch color={values.color} />}
       </EditableEntity.Property>
     </EditableEntity>
+    {bottomSlot}
   </Modal>
 );

@@ -55,6 +55,7 @@ export const CategorySelect = ({
 
   return (
     <BaseCategorySelect
+      label="Category"
       data={categories.currentData}
       value={String(categoryId ?? initialCategoryId)}
       onChange={handleChange}

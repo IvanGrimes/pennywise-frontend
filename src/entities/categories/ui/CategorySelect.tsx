@@ -8,6 +8,7 @@ import {
 export type CategorySelectProps = {
   data: GetCategoriesResponseDto[];
   value: string | null;
+  label?: string;
   onChange: (value: string | null) => void;
   onCreate?: (option: string) => void;
   disabled?: boolean;
@@ -15,6 +16,7 @@ export type CategorySelectProps = {
 };
 
 export const CategorySelect = ({
+  label,
   data,
   onCreate,
   value,
@@ -30,7 +32,7 @@ export const CategorySelect = ({
 
   return (
     <Select
-      label="Category"
+      label={label}
       data={options}
       placeholder="Select category"
       getCreateLabel={(query) => `+ Create ${query}`}

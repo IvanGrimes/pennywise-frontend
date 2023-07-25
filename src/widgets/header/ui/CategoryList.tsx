@@ -5,6 +5,7 @@ import {
   OpenAddCategoryModalButton,
   AddCategoryModal,
 } from 'features/categories/add-category-modal';
+import {DeleteCategoryModal, OpenDeleteCategoryModalButton} from 'features/categories/delete-category-modal';
 import { useRef, useState } from 'react';
 import { useModal } from 'shared/hooks';
 import { IconTag } from 'shared/icons';
@@ -81,12 +82,21 @@ export const CategoryList = () => {
         onClose={wasOpenedRef.current ? modal.open : undefined}
       />
       {category && (
-        <CategoryDetails
-          opened={categoryDetailsModal.opened}
-          onClose={handleCloseCategoryDetailsModal}
-          category={category}
-        />
+        <>
+          <CategoryDetails
+            opened={categoryDetailsModal.opened}
+            onClose={handleCloseCategoryDetailsModal}
+            category={category}
+            bottomSlot={
+              <OpenDeleteCategoryModalButton
+                onOpen={categoryDetailsModal.close}
+              />
+            }
+          />
+          <DeleteCategoryModal id={category.id} onSuccess={modal.open} onClose={categoryDetailsModal.open} />
+        </>
       )}
+
       <UserDropdownItem Icon={IconTag} onClick={handleOpen}>
         Categories
       </UserDropdownItem>
