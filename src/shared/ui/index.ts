@@ -72,4 +72,3 @@ export * from './EditableEntity';
 export * from './Popover';
 export * from './DeleteEntityButton';
 export * from './AddEntityButton';
-export * from './PieChart';
