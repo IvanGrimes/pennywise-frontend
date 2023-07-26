@@ -10,4 +10,5 @@ export const routes = {
     id ? `/transactions/${id}` : '/transactions/:id',
   accounts: '/accounts',
   account: (id?: number) => (id ? `/accounts/${id}` : '/accounts/:id'),
+  analytics: '/analytics',
 };

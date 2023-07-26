@@ -102,7 +102,7 @@ export type ApiErrorResponseDto = {
   correlationId: string;
   subErrors?: string[] | null;
 };
-export type TransactionType = "income" | "outcome";
+export type TransactionType = "income" | "outcome" | "transfer";
 export type CreateTransactionRequestDto = {
   type: TransactionType;
   categoryId: number;
@@ -112,8 +112,9 @@ export type CreateTransactionRequestDto = {
 };
 export type GetTransactionsResponseDto = {
   id: number;
-  type: "income" | "outcome";
+  type: "income" | "outcome" | "transfer";
   amount: number;
+  mainCurrencyAmount: number | null;
   description: string | null;
   accountId: number;
   categoryId: number;
@@ -121,8 +122,9 @@ export type GetTransactionsResponseDto = {
 };
 export type GetTransactionByIdResponseDto = {
   id: number;
-  type: "income" | "outcome";
+  type: "income" | "outcome" | "transfer";
   amount: number;
+  mainCurrencyAmount: number | null;
   description: string | null;
   accountId: number;
   categoryId: number;
@@ -143,8 +145,9 @@ export type DeleteTransactionByIdResponseDto = {
 };
 export type GetTransactionsByAccountResponseDto = {
   id: number;
-  type: "income" | "outcome";
+  type: "income" | "outcome" | "transfer";
   amount: number;
+  mainCurrencyAmount: number | null;
   description: string | null;
   accountId: number;
   categoryId: number;

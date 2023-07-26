@@ -43,7 +43,7 @@ export const AccountSelect = ({
 
   useEffect(() => {
     if (accountId || !initialAccountId) return;
-    console.log(accountId, initialAccountId);
+
     handleChangeAccountId(initialAccountId);
   }, [accountId, handleChangeAccountId, initialAccountId]);
 

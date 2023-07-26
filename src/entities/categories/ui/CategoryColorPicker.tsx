@@ -1,5 +1,4 @@
-import { Group, Box } from '@mantine/core';
-import { rem } from 'shared/ui';
+import { rem, Group, Box } from 'shared/ui';
 import { CheckIcon } from 'shared/icons';
 import { CategorySwatch } from './CategorySwatch';
 import { CategoryColor, categoryColorKeys } from '../model';

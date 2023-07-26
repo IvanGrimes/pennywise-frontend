@@ -1,4 +1,4 @@
-import { NativeSelect, NativeSelectProps } from '@mantine/core';
+import { NativeSelect, NativeSelectProps } from 'shared/ui';
 import { AccountType } from '../model';
 
 export type AccountTypeSelectProps = Pick<NativeSelectProps, 'size'> & {

@@ -1,6 +1,5 @@
-import { Group } from '@mantine/core';
 import { routes } from 'shared/routes';
-import { EntityCard, Text, Title } from 'shared/ui';
+import { EntityCard, Text, Title, Group } from 'shared/ui';
 import {
   AccountType,
   AccountCurrency,

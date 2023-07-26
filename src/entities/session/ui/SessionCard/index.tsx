@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
-import { Text, rem } from 'shared/ui';
+import { Text, rem, Skeleton } from 'shared/ui';
 import { useStyles } from './index.styles';
 import { getSpacedStringOrFallback, formatDate } from './utils';
-import { Skeleton } from '@mantine/core';
 
 export type SessionCardProps = {
   browserName: Nullable<string>;

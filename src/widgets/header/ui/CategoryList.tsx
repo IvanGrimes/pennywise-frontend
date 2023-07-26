@@ -1,4 +1,3 @@
-import { Group } from '@mantine/core';
 import { categoriesModel, CategoryTitle } from 'entities/categories';
 import { UserDropdownItem } from 'entities/viewer';
 import {
@@ -9,7 +8,7 @@ import {DeleteCategoryModal, OpenDeleteCategoryModalButton} from 'features/categ
 import { useRef, useState } from 'react';
 import { useModal } from 'shared/hooks';
 import { IconTag } from 'shared/icons';
-import { Button, FetchError, Modal } from 'shared/ui';
+import { Button, FetchError, Modal, Group } from 'shared/ui';
 import { CategoryDetails } from './CategoryDetails';
 
 export const CategoryList = () => {

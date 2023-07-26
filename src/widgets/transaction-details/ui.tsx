@@ -8,13 +8,14 @@ import {
   transactionsModel,
   TransactionAmount,
 } from 'entities/transactions';
+import { viewerModel } from 'entities/viewer';
 import { AccountSelect } from 'features/accounts/account-select';
 import { addCategoryModalModel } from 'features/categories/add-category-modal';
 import { DeleteTransactionButton } from 'features/transactions/delete-transaction';
 import { CategorySelect } from 'features/categories/category-select';
 import { useAppDispatch } from 'shared/model.ts';
 import { routes } from 'shared/routes';
-import { Link, Text, getEditableEntity } from 'shared/ui';
+import { Link, Text, getEditableEntity, Group, Flex } from 'shared/ui';
 
 export type TransactionDetailsProps = Omit<
   BaseTransactionDetailsProps,
@@ -32,6 +33,7 @@ export type TransactionDetailsProps = Omit<
   type: transactionsModel.TransactionType;
   accountId: number;
   category: categoriesModel.GetCategoriesResponseDto;
+  mainCurrencyAmount?: number;
 };
 
 type EditableValues = Pick<
@@ -49,8 +51,10 @@ export const TransactionDetails = ({
   type,
   accountId,
   category,
+  mainCurrencyAmount,
 }: TransactionDetailsProps) => {
   const categories = categoriesModel.api.useGetCategoriesQuery();
+  const user = viewerModel.api.useMeQuery();
   const accounts = accountsModel.api.useGetAccountsQuery(undefined, {
     selectFromResult: ({ currentData, isFetching }) => ({
       currentAccount: currentData?.find((item) => item.id === accountId),
@@ -90,7 +94,8 @@ export const TransactionDetails = ({
   if (
     !accounts.currentData ||
     !accounts.currentAccount ||
-    (accounts.isFetching && !accounts.currentData)
+    (accounts.isFetching && !accounts.currentData) ||
+    !user.currentData
   )
     return null;
 
@@ -122,12 +127,19 @@ export const TransactionDetails = ({
               />
             )}
           >
-            {({ values }) => (
-              <Link href={routes.account(values.accountId)}>
-                {accounts.currentAccount?.name}{' '}
-                {accounts.currentAccount?.balance}
-              </Link>
-            )}
+            {({ values }) =>
+              accounts.currentAccount ? (
+                <Link href={routes.account(values.accountId)}>
+                  {accounts.currentAccount.name}{' '}
+                  {accounts.currentAccount.balance}{' '}
+                  {
+                    accountsModel.currencySymbol[
+                      accounts.currentAccount.currency
+                    ]
+                  }
+                </Link>
+              ) : null
+            }
           </EditableEntity.Property>
         }
         categorySlot={
@@ -169,11 +181,25 @@ export const TransactionDetails = ({
             )}
           >
             {({ values }) => (
-              <TransactionAmount
-                type={values.type}
-                amount={values.amount}
-                currencySymbol={currencySymbol}
-              />
+              <Flex direction="column">
+                <TransactionAmount
+                  type={values.type}
+                  amount={values.amount}
+                  currencySymbol={currencySymbol}
+                />
+                {user.currentData &&
+                  user.currentData.mainCurrency !==
+                    accounts.currentAccount?.currency && (
+                    <Text size="xs" color="dimmed" component="div">
+                      ~ {mainCurrencyAmount}{' '}
+                      {
+                        accountsModel.currencySymbol[
+                          user.currentData.mainCurrency
+                        ]
+                      }
+                    </Text>
+                  )}
+              </Flex>
             )}
           </EditableEntity.Property>
         }

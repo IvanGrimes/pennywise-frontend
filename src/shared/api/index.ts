@@ -26,6 +26,10 @@ export {
   enhancedApi as categoriesApi,
   type GetCategoriesResponseDto,
 } from 'generated/rtk-query/categories';
+export {
+  enhancedApi as analyticsApi,
+  type GetExpensesByCategoriesResponseDto,
+} from 'generated/rtk-query/analytics';
 export * from './isFetchBaseQueryError';
 export type {
   authTypes,

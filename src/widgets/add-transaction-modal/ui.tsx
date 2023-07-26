@@ -66,6 +66,9 @@ export const AddTransactionModal = () => {
     );
   }
   const initialAccount = accounts.currentData[0];
+  const currentAccount = accounts.currentData.find(
+    (item) => item.id === accountId
+  );
 
   return (
     <AddEntityModal
@@ -89,7 +92,7 @@ export const AddTransactionModal = () => {
             disabled={loading}
           />
         )}
-        currency={initialAccount.currency}
+        currency={currentAccount?.currency ?? initialAccount.currency}
         onSuccess={handleSuccess}
       />
     </AddEntityModal>

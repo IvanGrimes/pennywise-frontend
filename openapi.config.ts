@@ -14,6 +14,7 @@ const config: ConfigFile = {
         [getPath('transactions')]: { filterEndpoints: (_, {path}) => path.includes('/transactions/') },
         [getPath('accounts')]: { filterEndpoints: (_, {path}) => path.includes('/accounts/') },
         [getPath('categories')]: { filterEndpoints: (_, {path}) => path.includes('/categories/') },
+        [getPath('analytics')]: { filterEndpoints: (_, {path}) => path.includes('/analytics/') },
     },
     hooks: false,
     tag: true,

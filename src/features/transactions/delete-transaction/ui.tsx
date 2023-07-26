@@ -1,3 +1,4 @@
+import { accountsModel } from 'entities/accounts';
 import { transactionsModel } from 'entities/transactions';
 import { useNavigate } from 'react-router-dom';
 import { isApiError } from 'shared/api';
@@ -12,12 +13,15 @@ export const DeleteTransactionButton = ({
 }: DeleteTransactionButtonProps) => {
   const [deleteTransactionMutation, deleteTransaction] =
     transactionsModel.api.useDeleteTransactionByIdMutation();
+  const accounts = accountsModel.api.useGetAccountsQuery();
   const navigate = useNavigate();
   const handleDelete = async () => {
     try {
       await deleteTransactionMutation({ id }).unwrap();
 
       navigate(routes.transactions);
+
+      await accounts.refetch().unwrap();
     } catch (e) {
       const title = 'Transaction delete';
 

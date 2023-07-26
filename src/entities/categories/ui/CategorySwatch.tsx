@@ -1,4 +1,4 @@
-import { ColorSwatch, useMantineTheme } from '@mantine/core';
+import { ColorSwatch, useMantineTheme } from 'shared/ui';
 import { PropsWithChildren } from 'react';
 
 export type CategorySwatchProps = PropsWithChildren<{

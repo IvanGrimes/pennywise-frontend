@@ -1,4 +1,4 @@
-import { NativeSelect } from '@mantine/core';
+import { NativeSelect } from 'shared/ui';
 import { AccountCurrency, currencySymbol } from '../model';
 
 export type AccountCurrencySelectProps = {

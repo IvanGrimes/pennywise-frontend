@@ -20,6 +20,8 @@ export {
   useMantineTheme,
   ColorSwatch,
   Switch,
+  RingProgress,
+  Transition,
 } from '@mantine/core';
 export type {
   TextInputProps,
@@ -41,6 +43,8 @@ export type {
   ColorSwatchProps,
   SwitchProps,
   DefaultMantineColor,
+  RingProgressProps,
+  TransitionProps,
 } from '@mantine/core';
 
 export * from './Layout';
@@ -68,3 +72,4 @@ export * from './EditableEntity';
 export * from './Popover';
 export * from './DeleteEntityButton';
 export * from './AddEntityButton';
+export * from './PieChart';

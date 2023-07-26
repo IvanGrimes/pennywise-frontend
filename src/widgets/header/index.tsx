@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { lazy, useMemo } from 'react';
 import { useAppSelector } from 'shared/model';
 import { routes } from 'shared/routes';
 import { Header as BaseHeader, HeaderMenuListItem } from 'shared/ui';
@@ -8,13 +8,20 @@ import { authModel } from 'entities/auth';
 import { UserCard } from 'features/user-dropdown/user-card';
 import { EmailStatus } from 'features/email/email-status';
 import { SignOut } from 'features/user-dropdown/sign-out';
-import { SessionManager, CategoryList } from './ui';
 
 const menuList: HeaderMenuListItem[] = [
   { href: routes.accounts, label: 'Accounts' },
   { href: routes.transactions, label: 'Transactions' },
-  { href: '#', label: 'Analytics' },
+  { href: routes.analytics, label: 'Analytics' },
 ];
+
+const CategoryList = lazy(() =>
+  import('./ui').then((m) => ({ default: m.CategoryList }))
+);
+
+const SessionManager = lazy(() =>
+  import('./ui').then((m) => ({ default: m.SessionManager }))
+);
 
 export const Header = () => {
   const location = useLocation();

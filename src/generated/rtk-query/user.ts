@@ -21,6 +21,7 @@ export type MeResponseDto = {
   lastName: string;
   email: string;
   isEmailVerified: boolean;
+  mainCurrency: "rub" | "usd" | "eur" | "gbp" | "aed";
 };
 export type ApiErrorResponseDto = {
   statusCode: number;
