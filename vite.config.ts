@@ -20,7 +20,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (id.includes('@mantine/form') || id.includes('@mantine+notifications') || id.includes('react-transition-group') || id.includes('@tabler+icons') || id.includes('dayjs') || id.includes('react-remove-scroll')) {
+          if (id.includes('@mantine/form') || id.includes('@mantine+notifications') || id.includes('@mantine+dates') || id.includes('react-transition-group') || id.includes('@tabler+icons') || id.includes('dayjs') || id.includes('react-remove-scroll')) {
             return 'ui'
           }
           if (id.includes('@mantine+') || id.includes('emotion') || id.includes('@radix-ui')) {

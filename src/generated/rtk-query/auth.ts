@@ -65,7 +65,7 @@ export type SignUpRequestDto = {
 };
 export type SignInResponseDto = {
   accessToken: string;
-  refreshToken: string | null;
+  refreshToken?: string;
 };
 export type SignInRequestDto = {
   email: string;
@@ -74,7 +74,7 @@ export type SignInRequestDto = {
 };
 export type RefreshTokenResponseDto = {
   accessToken: string;
-  refreshToken: string | null;
+  refreshToken?: string;
 };
 export type SignOutResponseDto = {
   success: boolean;

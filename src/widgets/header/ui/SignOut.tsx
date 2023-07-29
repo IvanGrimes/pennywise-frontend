@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { IconLogout } from 'shared/icons';
 import { useAppDispatch } from 'shared/model';
 import { showErrorNotification } from 'shared/notifications';
-import { signOutThunk } from './model';
+import { signOutModel } from 'features/auth/sign-out';
 
 export const SignOut = () => {
   const dispatch = useAppDispatch();
@@ -12,7 +12,7 @@ export const SignOut = () => {
     setLoading(true);
 
     try {
-      await dispatch(signOutThunk()).unwrap();
+      await dispatch(signOutModel.signOutThunk()).unwrap();
     } catch (e) {
       showErrorNotification({ title: 'Sign out', message: 'Unknown error' });
     }

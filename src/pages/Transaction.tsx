@@ -9,28 +9,31 @@ import { TransactionDetails } from 'widgets/transaction-details';
 const Transaction = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const transaction = transactionsModel.api.useGetTransactionsQuery(undefined, {
-    skip: !Number.isFinite(Number(id)),
-    selectFromResult: ({
-      currentData,
-      isError,
-      error,
-      isFetching,
-      isUninitialized,
-    }) => {
-      const transactionById = currentData?.find(
-        (item) => item.id === Number(id)
-      );
-
-      return {
-        isFetching,
-        currentData: transactionById,
+  const transaction = transactionsModel.api.useGetTransactionsQuery(
+    { getTransactionsRequestDto: {} },
+    {
+      skip: !Number.isFinite(Number(id)),
+      selectFromResult: ({
+        currentData,
         isError,
         error,
-        isNotFound: isUninitialized ? false : !isFetching && !transactionById,
-      };
-    },
-  });
+        isFetching,
+        isUninitialized,
+      }) => {
+        const transactionById = currentData?.find(
+          (item) => item.id === Number(id)
+        );
+
+        return {
+          isFetching,
+          currentData: transactionById,
+          isError,
+          error,
+          isNotFound: isUninitialized ? false : !isFetching && !transactionById,
+        };
+      },
+    }
+  );
   const category = categoriesModel.api.useGetCategoriesQuery(undefined, {
     skip: !transaction.currentData,
     selectFromResult: ({ currentData, isFetching }) => ({

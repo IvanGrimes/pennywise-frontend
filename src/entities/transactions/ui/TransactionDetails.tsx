@@ -5,7 +5,7 @@ import { TransactionDate } from './TransactionDate';
 export type TransactionDetailsProps = {
   date: string;
   amountSlot: ReactNode;
-  description: string | null;
+  description?: string;
   typeSlot: ReactNode;
   categorySlot: ReactNode;
   descriptionSlot?: ReactNode;

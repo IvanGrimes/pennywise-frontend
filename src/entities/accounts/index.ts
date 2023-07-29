@@ -1,5 +1,5 @@
 import * as accountsModel from './model';
 
 export * from './ui';
-export { formatAccountBalance } from './utils';
+export { formatAccountBalance } from './lib';
 export { accountsModel };

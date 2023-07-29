@@ -11,13 +11,16 @@ export type EditableEntityPropertyProps<
   T extends ValuesConstraint,
   P extends keyof T
 > = {
+  className?: string;
   property: P;
   editableSlot: (props: {
+    save: (partialValues?: Partial<T>) => void;
     value: T[P];
     onChange: (value: T[P]) => void;
     disabled: boolean;
   }) => ReactNode;
   children: (props: { values: T }) => ReactNode;
+  showControl?: boolean;
 };
 
 const useStyles = createStyles((theme) => ({
@@ -35,6 +38,8 @@ export const getEditableEntityProperty = <T extends ValuesConstraint>() => {
     children,
     editableSlot,
     property,
+    className,
+    showControl = true,
   }: EditableEntityPropertyProps<T, P>) => {
     const { classes, cx } = useStyles();
     const [edit, setEdit] = useState(false);
@@ -56,13 +61,14 @@ export const getEditableEntityProperty = <T extends ValuesConstraint>() => {
       setEditing(true);
       setEdit(true);
     };
-    const handleSave = async () => {
+    const handleSave = async (partialValues: Partial<T> = {}) => {
       try {
-        await onSave(values);
+        await onSave({ ...values, ...partialValues });
 
         setEdit(false);
         setEditing(false);
       } catch (e) {
+        console.log(e);
         // @todo: handle error
       }
     };
@@ -101,29 +107,32 @@ export const getEditableEntityProperty = <T extends ValuesConstraint>() => {
           value: values[property],
           onChange: (value) => onChange({ property, value }),
           disabled,
+          save: handleSave,
         })}
-        <Group spacing="xs">
-          {hasValueChanged && (
+        {showControl && (
+          <Group spacing="xs">
+            {hasValueChanged && (
+              <ActionIcon
+                variant="light"
+                color="blue"
+                size="sm"
+                onClick={() => handleSave()}
+                disabled={disabled}
+              >
+                <CheckIcon size="1.5rem" />
+              </ActionIcon>
+            )}
             <ActionIcon
               variant="light"
-              color="blue"
+              color="red"
               size="sm"
-              onClick={handleSave}
+              onClick={handleCancel}
               disabled={disabled}
             >
-              <CheckIcon size="1.5rem" />
+              <IconX size="1.25rem" />
             </ActionIcon>
-          )}
-          <ActionIcon
-            variant="light"
-            color="red"
-            size="sm"
-            onClick={handleCancel}
-            disabled={disabled}
-          >
-            <IconX size="1.25rem" />
-          </ActionIcon>
-        </Group>
+          </Group>
+        )}
       </Group>
     );
 
@@ -136,7 +145,15 @@ export const getEditableEntityProperty = <T extends ValuesConstraint>() => {
     }, [containerHeight]);
 
     return (
-      <Box sx={{ height: containerHeight }}>
+      <Box
+        className={className}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          height: containerHeight,
+        }}
+      >
         {content}
         {editableContent}
       </Box>

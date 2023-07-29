@@ -5,13 +5,13 @@ import {
   PayloadAction,
 } from '@reduxjs/toolkit';
 import { authModel } from 'entities/auth';
-import { signOutThunk } from '../../user-dropdown/sign-out';
+import { signOutModel } from '../sign-out';
 import {
   appInitEvent,
   refreshTokenFail,
   refreshTokenSuccess,
 } from 'shared/model';
-import { readAccessToken, removeAccessToken, writeAccessToken } from './utils';
+import { readAccessToken, removeAccessToken, writeAccessToken } from './lib';
 
 export const accessTokenListener = createListenerMiddleware();
 
@@ -51,7 +51,7 @@ startAccessTokenListener({
 startAccessTokenListener({
   actionCreator: refreshTokenFail,
   effect: (_, { dispatch }) => {
-    dispatch(signOutThunk());
+    dispatch(signOutModel.signOutThunk());
   },
 });
 

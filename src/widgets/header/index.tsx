@@ -1,13 +1,14 @@
+import { ToggleThemeSwitch } from 'features/theme/toggle-theme';
 import { lazy, useMemo } from 'react';
 import { useAppSelector } from 'shared/model';
 import { routes } from 'shared/routes';
-import { Header as BaseHeader, HeaderMenuListItem } from 'shared/ui';
+import { Group, Header as BaseHeader, HeaderMenuListItem } from 'shared/ui';
 import { UserDropdown } from 'entities/viewer';
 import { useLocation } from 'react-router-dom';
 import { authModel } from 'entities/auth';
 import { UserCard } from 'features/user-dropdown/user-card';
 import { EmailStatus } from 'features/email/email-status';
-import { SignOut } from 'features/user-dropdown/sign-out';
+import { SignOut } from './ui';
 
 const menuList: HeaderMenuListItem[] = [
   { href: routes.accounts, label: 'Accounts' },
@@ -43,7 +44,12 @@ export const Header = () => {
   return (
     <BaseHeader
       showMenu={isAuth}
-      viewerSlot={isAuth ? userDropdown : null}
+      rightSlot={
+        <Group>
+          <ToggleThemeSwitch />
+          {isAuth ? userDropdown : null}
+        </Group>
+      }
       menuList={menuList}
       isMenuItemActive={(item) => item.href === location.pathname}
     />

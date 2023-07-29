@@ -16,6 +16,12 @@ const config: ConfigFile = {
         [getPath('categories')]: { filterEndpoints: (_, {path}) => path.includes('/categories/') },
         [getPath('analytics')]: { filterEndpoints: (_, {path}) => path.includes('/analytics/') },
     },
+    endpointOverrides: [
+        {
+            pattern: 'getTransactions',
+            type: 'query'
+        }
+    ],
     hooks: false,
     tag: true,
 }

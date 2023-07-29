@@ -1,5 +1,5 @@
 export {
   DatesProvider,
-  MonthPicker,
-  type MonthPickerProps,
+  DatePickerInput,
+  type DatePickerInputProps,
 } from '@mantine/dates';

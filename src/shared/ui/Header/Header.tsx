@@ -10,7 +10,7 @@ import { Flex } from '../Flex';
 export type HeaderProps = {
   menuList: HeaderMenuListItem[];
   isMenuItemActive: (item: HeaderMenuListItem) => boolean;
-  viewerSlot?: ReactNode;
+  rightSlot?: ReactNode;
   showMenu: boolean;
 };
 
@@ -22,8 +22,8 @@ export type HeaderMenuListItem = {
 export const Header = ({
   menuList,
   isMenuItemActive,
-  viewerSlot,
   showMenu,
+  rightSlot,
 }: HeaderProps) => {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes, cx } = useStyles();
@@ -57,7 +57,7 @@ export const Header = ({
             </Group>
           )}
         </Flex>
-        {viewerSlot}
+        {rightSlot}
       </Container>
     </BaseHeader>
   );

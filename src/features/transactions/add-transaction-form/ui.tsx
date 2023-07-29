@@ -56,7 +56,7 @@ export const AddTransactionForm = ({
       console.log([e]);
     }
   });
-  console.log(accountsModel.currencySymbol, currency);
+
   return (
     <AddEntityFormLayout
       onSubmit={handleSubmit}

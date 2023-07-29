@@ -38,12 +38,12 @@ export type TerminateAllApiResponse = /** status 200  */ TerminateResponseDto;
 export type TerminateAllApiArg = void;
 export type AllResponseDto = {
   id: number;
-  browserName: string | null;
-  browserVersion: string | null;
-  deviceType: string | null;
-  deviceBrand: string | null;
-  deviceOs: string | null;
-  location: string | null;
+  browserName?: string;
+  browserVersion?: string;
+  deviceType?: string;
+  deviceBrand?: string;
+  deviceOs?: string;
+  location?: string;
   ip: string;
   isRevoked: boolean;
   isCurrent: boolean;

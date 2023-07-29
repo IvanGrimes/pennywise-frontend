@@ -24,7 +24,7 @@ export const CategoryExpenseCard = ({
           thickness={5}
           sections={[{ color, value: percentage }]}
           label={
-            <Text fw={500} align="center">
+            <Text fw={300} align="center">
               {percentage}
             </Text>
           }

@@ -6,14 +6,11 @@ import { Card } from './Card';
 export type EntityCardProps = PropsWithChildren<{ href?: string }>;
 
 const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+  link: {
+    display: 'block',
     textDecoration: 'none',
 
     '&&': {
-      color: theme.colors.dark[9],
-
       ':hover': {
         textDecoration: 'none',
       },
@@ -22,6 +19,10 @@ const useStyles = createStyles((theme) => ({
     '& + &': {
       marginTop: theme.spacing.lg,
     },
+  },
+  card: {
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
   },
 }));
 
@@ -36,9 +37,9 @@ export const EntityCard = ({ href, children }: EntityCardProps) => {
 
   if (href) {
     return (
-      <Card to={href} component={Link} {...props}>
-        {children}
-      </Card>
+      <Link className={classes.link} to={href}>
+        <Card {...props}>{children}</Card>
+      </Link>
     );
   }
 

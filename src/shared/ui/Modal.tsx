@@ -9,7 +9,7 @@ export type ModalProps = PropsWithChildren<{
 }>;
 
 export const Modal = ({ opened, onClose, title, children }: ModalProps) => (
-  <BaseModal.Root opened={opened} onClose={onClose}>
+  <BaseModal.Root opened={opened} onClose={onClose} keepMounted>
     <BaseModal.Overlay />
     <BaseModal.Content scrollAreaComponent={ScrollArea.Autosize}>
       <BaseModal.Header>

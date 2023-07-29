@@ -25,4 +25,7 @@ export {
   IconPlus,
   IconTag,
   type TablerIconsProps as IconProps,
+  IconSun,
+  IconMoonStars,
+  IconFilter,
 } from '@tabler/icons-react';

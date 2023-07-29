@@ -26,7 +26,9 @@ export const DeleteCategoryModal = ({
   const [newCategoryId, setNewCategoryId] = useState<string | null>(null);
   const [deleteCategoryMutation, deleteCategory] =
     categoriesModel.api.useDeleteByIdMutation();
-  const transactions = transactionsModel.api.useGetTransactionsQuery();
+  const transactions = transactionsModel.api.useGetTransactionsQuery({
+    getTransactionsRequestDto: {},
+  });
   const handleClose = () => {
     dispatch(close());
     onClose?.();

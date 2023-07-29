@@ -21,14 +21,11 @@ const injectedRtkApi = api
         GetTransactionsApiResponse,
         GetTransactionsApiArg
       >({
-        query: () => ({ url: `/transactions/get` }),
-        providesTags: ["transactions"],
-      }),
-      getTransactionById: build.query<
-        GetTransactionByIdApiResponse,
-        GetTransactionByIdApiArg
-      >({
-        query: (queryArg) => ({ url: `/transactions/${queryArg.id}` }),
+        query: (queryArg) => ({
+          url: `/transactions/get`,
+          method: "POST",
+          body: queryArg.getTransactionsRequestDto,
+        }),
         providesTags: ["transactions"],
       }),
       updateTransactionById: build.mutation<
@@ -56,7 +53,10 @@ const injectedRtkApi = api
         GetTransactionsByAccountApiResponse,
         GetTransactionsByAccountApiArg
       >({
-        query: (queryArg) => ({ url: `/transactions/account/${queryArg.id}` }),
+        query: (queryArg) => ({
+          url: `/transactions/account/${queryArg.id}`,
+          body: queryArg.getTransactionsRequestDto,
+        }),
         providesTags: ["transactions"],
       }),
     }),
@@ -70,11 +70,8 @@ export type CreateTransactionApiArg = {
 };
 export type GetTransactionsApiResponse =
   /** status 200  */ GetTransactionsResponseDto[];
-export type GetTransactionsApiArg = void;
-export type GetTransactionByIdApiResponse =
-  /** status 200  */ GetTransactionByIdResponseDto;
-export type GetTransactionByIdApiArg = {
-  id: number;
+export type GetTransactionsApiArg = {
+  getTransactionsRequestDto: GetTransactionsRequestDto;
 };
 export type UpdateTransactionByIdApiResponse =
   /** status 200  */ UpdateTransactionByIdResponseDto;
@@ -91,6 +88,7 @@ export type GetTransactionsByAccountApiResponse =
   /** status 200  */ GetTransactionsByAccountResponseDto[];
 export type GetTransactionsByAccountApiArg = {
   id: number;
+  getTransactionsRequestDto: GetTransactionsRequestDto;
 };
 export type CreateTransactionResponseDto = {
   success: boolean;
@@ -112,23 +110,22 @@ export type CreateTransactionRequestDto = {
 };
 export type GetTransactionsResponseDto = {
   id: number;
-  type: "income" | "outcome" | "transfer";
+  type: TransactionType;
   amount: number;
-  mainCurrencyAmount: number | null;
-  description: string | null;
+  mainCurrencyAmount?: number;
+  description?: string;
   accountId: number;
   categoryId: number;
   date: string;
 };
-export type GetTransactionByIdResponseDto = {
-  id: number;
-  type: "income" | "outcome" | "transfer";
-  amount: number;
-  mainCurrencyAmount: number | null;
-  description: string | null;
-  accountId: number;
-  categoryId: number;
-  date: string;
+export type CategoryFilterBehavior = "exclude" | "include";
+export type GetTransactionsRequestDto = {
+  transactionType?: TransactionType;
+  dateFrom?: string;
+  dateTo?: string;
+  accountIds?: number[];
+  categoryIds?: number[];
+  categoryBehavior?: CategoryFilterBehavior;
 };
 export type UpdateTransactionByIdResponseDto = {
   success: boolean;
@@ -145,10 +142,10 @@ export type DeleteTransactionByIdResponseDto = {
 };
 export type GetTransactionsByAccountResponseDto = {
   id: number;
-  type: "income" | "outcome" | "transfer";
+  type: TransactionType;
   amount: number;
-  mainCurrencyAmount: number | null;
-  description: string | null;
+  mainCurrencyAmount?: number;
+  description?: string;
   accountId: number;
   categoryId: number;
   date: string;

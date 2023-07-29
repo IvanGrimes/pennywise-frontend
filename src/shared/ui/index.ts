@@ -22,6 +22,10 @@ export {
   Switch,
   RingProgress,
   Transition,
+  ColorSchemeProvider,
+  useMantineColorScheme,
+  SegmentedControl,
+  MultiSelect,
 } from '@mantine/core';
 export type {
   TextInputProps,
@@ -45,6 +49,10 @@ export type {
   DefaultMantineColor,
   RingProgressProps,
   TransitionProps,
+  ColorScheme,
+  SegmentedControlProps,
+  MultiSelectProps,
+  SelectItem,
 } from '@mantine/core';
 
 export * from './Layout';

@@ -15,6 +15,8 @@ export {
   enhancedApi as transactionsApi,
   type TransactionType,
   type GetTransactionsResponseDto,
+  type GetTransactionsRequestDto,
+  type CategoryFilterBehavior,
 } from 'generated/rtk-query/transactions';
 export {
   enhancedApi as accountsApi,

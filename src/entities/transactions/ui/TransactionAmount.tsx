@@ -13,7 +13,7 @@ export const TransactionAmount = ({
   currencySymbol,
 }: TransactionAmountProps) => (
   <Title
-    sx={{ '&&': { margin: 0 } }}
+    sx={{ '&&': { margin: 0, color: 'unset' } }}
     order={5}
     color={type === 'income' ? 'green' : 'black'}
   >

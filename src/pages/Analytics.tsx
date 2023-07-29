@@ -2,7 +2,8 @@ import { useMantineTheme } from '@mantine/core';
 import { accountsModel } from 'entities/accounts';
 import { analyticsModel, CategoryExpenseCard } from 'entities/analytics';
 import { viewerModel } from 'entities/viewer';
-import { Box, Flex, rem } from 'shared/ui';
+import { OpenTransactionFiltersModalButton } from 'features/transactions/transaction-filters';
+import { Box, Flex, Group, rem } from 'shared/ui';
 import { withPrivateGuard } from './utils/withPrivateGuard';
 import { CategoryExpensesBreakdown } from 'features/analytics/category-expenses-breakdown';
 
@@ -27,6 +28,10 @@ const AnalyticsPage = () => {
 
   return (
     <div>
+      <Group position="right">
+        <OpenTransactionFiltersModalButton />
+      </Group>
+
       <Flex justify="center">
         <CategoryExpensesBreakdown />
       </Flex>

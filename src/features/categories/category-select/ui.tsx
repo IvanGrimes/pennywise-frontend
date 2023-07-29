@@ -11,6 +11,7 @@ export type CategorySelectProps = {
   onChange?: (value: number | null) => void;
   initialCategoryId: number | undefined;
   onCreate?: (name: string) => void;
+  label?: string;
 };
 
 export const CategorySelect = ({
@@ -18,6 +19,7 @@ export const CategorySelect = ({
   onChange,
   initialCategoryId,
   onCreate,
+  label,
 }: CategorySelectProps) => {
   const categories = categoriesModel.api.useGetCategoriesQuery();
   const categoryId = useAppSelector(selectCategoryId);
@@ -55,7 +57,7 @@ export const CategorySelect = ({
 
   return (
     <BaseCategorySelect
-      label="Category"
+      label={label}
       data={categories.currentData}
       value={String(categoryId ?? initialCategoryId)}
       onChange={handleChange}

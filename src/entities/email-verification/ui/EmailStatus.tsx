@@ -21,7 +21,13 @@ export const EmailStatus = ({
     ) : (
       <IconMailOff color="red" size={iconSize} />
     )}
-    <Text color="black">{email}</Text>
+    <Text
+      sx={(theme) => ({
+        color: theme.colorScheme === 'dark' ? theme.colors.gray[4] : '#000',
+      })}
+    >
+      {email}
+    </Text>
     {!isVerified && resendButtonSlot}
   </Group>
 );

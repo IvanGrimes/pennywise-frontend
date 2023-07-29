@@ -87,6 +87,7 @@ export const AddTransactionModal = () => {
         categoryId={categoryId}
         categorySelectSlot={({ loading }) => (
           <CategorySelect
+            label="Category"
             initialCategoryId={categories.currentData?.[0]?.id}
             onCreate={handleCreateCategory}
             disabled={loading}

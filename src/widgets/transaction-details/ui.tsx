@@ -13,9 +13,9 @@ import { AccountSelect } from 'features/accounts/account-select';
 import { addCategoryModalModel } from 'features/categories/add-category-modal';
 import { DeleteTransactionButton } from 'features/transactions/delete-transaction';
 import { CategorySelect } from 'features/categories/category-select';
-import { useAppDispatch } from 'shared/model.ts';
+import { useAppDispatch } from 'shared/model';
 import { routes } from 'shared/routes';
-import { Link, Text, getEditableEntity, Group, Flex } from 'shared/ui';
+import { Link, Text, getEditableEntity, Flex } from 'shared/ui';
 
 export type TransactionDetailsProps = Omit<
   BaseTransactionDetailsProps,
@@ -171,37 +171,35 @@ export const TransactionDetails = ({
           </EditableEntity.Property>
         }
         amountSlot={
-          <EditableEntity.Property
-            property="amount"
-            editableSlot={(props) => (
-              <TransactionAmountInput
-                currencySymbol={currencySymbol}
-                {...props}
-              />
-            )}
-          >
-            {({ values }) => (
-              <Flex direction="column">
-                <TransactionAmount
-                  type={values.type}
-                  amount={values.amount}
+          <>
+            <EditableEntity.Property
+              property="amount"
+              editableSlot={(props) => (
+                <TransactionAmountInput
                   currencySymbol={currencySymbol}
+                  {...props}
                 />
-                {user.currentData &&
-                  user.currentData.mainCurrency !==
-                    accounts.currentAccount?.currency && (
-                    <Text size="xs" color="dimmed" component="div">
-                      ~ {mainCurrencyAmount}{' '}
-                      {
-                        accountsModel.currencySymbol[
-                          user.currentData.mainCurrency
-                        ]
-                      }
-                    </Text>
-                  )}
-              </Flex>
-            )}
-          </EditableEntity.Property>
+              )}
+            >
+              {({ values }) => (
+                <Flex direction="column">
+                  <TransactionAmount
+                    type={values.type}
+                    amount={values.amount}
+                    currencySymbol={currencySymbol}
+                  />
+                </Flex>
+              )}
+            </EditableEntity.Property>
+            {user.currentData &&
+              user.currentData.mainCurrency !==
+                accounts.currentAccount?.currency && (
+                <Text size="xs" color="dimmed" component="div">
+                  ~ {mainCurrencyAmount}{' '}
+                  {accountsModel.currencySymbol[user.currentData.mainCurrency]}
+                </Text>
+              )}
+          </>
         }
         typeSlot={
           <EditableEntity.Property

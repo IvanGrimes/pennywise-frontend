@@ -1,4 +1,4 @@
-import { formatAccountBalance } from '../utils';
+import { formatAccountBalance } from '../lib';
 import { Select } from 'shared/ui';
 import { GetAccountsResponseDto, AccountCurrency } from '../model';
 import {
