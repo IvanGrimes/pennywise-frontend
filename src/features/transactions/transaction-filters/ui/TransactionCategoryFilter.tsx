@@ -18,7 +18,7 @@ export const TransactionCategoryFilter = () => {
       data={options}
       value={filters.categoryIds.map(String)}
       onChange={handleChange}
-      label="Categories"
+      placeholder="Select category"
       withinPortal
     />
   );

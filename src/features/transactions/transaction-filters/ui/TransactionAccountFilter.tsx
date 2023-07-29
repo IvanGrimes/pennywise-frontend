@@ -18,7 +18,7 @@ export const TransactionAccountFilter = () => {
       data={options}
       onChange={handleChange}
       value={filters.accountIds.map(String)}
-      label="Accounts"
+      placeholder="Select account"
       withinPortal
     />
   );

@@ -20,6 +20,10 @@ const config: ConfigFile = {
         {
             pattern: 'getTransactions',
             type: 'query'
+        },
+        {
+            pattern: 'getExpensesByCategories',
+            type: 'query'
         }
     ],
     hooks: false,

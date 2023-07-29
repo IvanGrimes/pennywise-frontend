@@ -1,4 +1,5 @@
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren } from 'react';
+import { useLocalStorage, useHotkeys } from 'shared/hooks';
 import {
   ColorSchemeProvider as BaseColorSchemeProvider,
   ColorScheme,
@@ -10,9 +11,15 @@ export type ColorSchemeProviderProps = PropsWithChildren;
 export { useColorScheme };
 
 export const ColorSchemeProvider = ({ children }: ColorSchemeProviderProps) => {
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: 'color-scheme',
+    defaultValue: 'light',
+    getInitialValueInEffect: true,
+  });
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
+  useHotkeys([['mod+J', () => toggleColorScheme()]]);
 
   return (
     <BaseColorSchemeProvider

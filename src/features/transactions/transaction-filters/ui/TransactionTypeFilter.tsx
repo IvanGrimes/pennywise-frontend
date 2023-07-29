@@ -1,17 +1,20 @@
 import { transactionsModel } from 'entities/transactions';
 import { useAppDispatch, useAppSelector } from 'shared/model';
 import { SegmentedControl } from 'shared/ui';
-import { changeTransactionType, selectTransactionFilters } from '../model';
+import {
+  changeTransactionType,
+  selectTransactionFilters,
+  TransactionTypeFilterOption,
+  defaultTransactionTypeOptions,
+} from '../model';
 
-const transactionTypeList: {
-  label: string;
-  value: transactionsModel.TransactionType;
-}[] = [
-  { value: 'outcome', label: 'Expenses' },
-  { value: 'income', label: 'Income' },
-];
+export type TransactionTypeFilterProps = {
+  options?: TransactionTypeFilterOption[];
+};
 
-export const TransactionTypeFilter = () => {
+export const TransactionTypeFilter = ({
+  options = defaultTransactionTypeOptions,
+}: TransactionTypeFilterProps) => {
   const filters = useAppSelector(selectTransactionFilters);
   const dispatch = useAppDispatch();
   const handleChange = (value: transactionsModel.TransactionType) =>
@@ -19,7 +22,7 @@ export const TransactionTypeFilter = () => {
 
   return (
     <SegmentedControl
-      data={transactionTypeList}
+      data={options}
       onChange={handleChange}
       value={filters.transactionType}
     />

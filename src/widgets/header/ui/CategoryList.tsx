@@ -4,11 +4,22 @@ import {
   OpenAddCategoryModalButton,
   AddCategoryModal,
 } from 'features/categories/add-category-modal';
-import {DeleteCategoryModal, OpenDeleteCategoryModalButton} from 'features/categories/delete-category-modal';
+import {
+  DeleteCategoryModal,
+  OpenDeleteCategoryModalButton,
+} from 'features/categories/delete-category-modal';
 import { useRef, useState } from 'react';
 import { useModal } from 'shared/hooks';
 import { IconTag } from 'shared/icons';
-import { Button, FetchError, Modal, Group } from 'shared/ui';
+import {
+  Button,
+  FetchError,
+  Modal,
+  Group,
+  Box,
+  Flex,
+  Divider,
+} from 'shared/ui';
 import { CategoryDetails } from './CategoryDetails';
 
 export const CategoryList = () => {
@@ -39,22 +50,31 @@ export const CategoryList = () => {
   const getContent = () => {
     if (categories.currentData) {
       return (
-        <div>
+        <Flex direction="column" w="50%">
           {categories.currentData.map((item) => {
             const { name, color } = item;
 
             return (
-              <Group key={color + name}>
+              <>
                 <Button
+                  key={name + color}
+                  sx={{
+                    padding: '0 8px',
+                    '&& .mantine-Button-inner': {
+                      justifyContent: 'flex-start',
+                    },
+                  }}
                   variant="subtle"
+                  color="dark"
                   onClick={handleOpenCategoryDetailsModal(item)}
                 >
                   <CategoryTitle name={name} color={color} />
                 </Button>
-              </Group>
+                <Divider />
+              </>
             );
           })}
-        </div>
+        </Flex>
       );
     }
     if (categories.error) {
@@ -75,7 +95,7 @@ export const CategoryList = () => {
         <Group position="right">
           <OpenAddCategoryModalButton onOpen={modal.close} />
         </Group>
-        {getContent()}
+        <Box mt={8}>{getContent()}</Box>
       </Modal>
       <AddCategoryModal
         onClose={wasOpenedRef.current ? modal.open : undefined}
@@ -92,7 +112,11 @@ export const CategoryList = () => {
               />
             }
           />
-          <DeleteCategoryModal id={category.id} onSuccess={modal.open} onClose={categoryDetailsModal.open} />
+          <DeleteCategoryModal
+            id={category.id}
+            onSuccess={modal.open}
+            onClose={categoryDetailsModal.open}
+          />
         </>
       )}
 

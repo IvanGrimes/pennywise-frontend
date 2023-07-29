@@ -28,4 +28,6 @@ export {
   IconSun,
   IconMoonStars,
   IconFilter,
+  IconFilterPlus,
+  IconFilterOff,
 } from '@tabler/icons-react';

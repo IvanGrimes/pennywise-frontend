@@ -24,7 +24,6 @@ export {
   Transition,
   ColorSchemeProvider,
   useMantineColorScheme,
-  SegmentedControl,
   MultiSelect,
 } from '@mantine/core';
 export type {
@@ -50,7 +49,6 @@ export type {
   RingProgressProps,
   TransitionProps,
   ColorScheme,
-  SegmentedControlProps,
   MultiSelectProps,
   SelectItem,
 } from '@mantine/core';
@@ -80,3 +78,4 @@ export * from './EditableEntity';
 export * from './Popover';
 export * from './DeleteEntityButton';
 export * from './AddEntityButton';
+export * from './SegmentedControl';

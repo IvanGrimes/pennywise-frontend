@@ -21,7 +21,7 @@ export const CategoryExpensesOverview = ({
     }))}
     label={
       <Flex direction="column" align="center" justify="center">
-        <Title sx={{ '&&': { margin: 0, marginTop: 8 } }} order={4}>
+        <Title sx={{ '&&': { margin: 0, marginTop: 8 } }} order={2}>
           {amount} {currencySymbol}
         </Title>
       </Flex>

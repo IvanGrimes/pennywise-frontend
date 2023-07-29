@@ -10,7 +10,11 @@ const injectedRtkApi = api
         GetExpensesByCategoriesApiResponse,
         GetExpensesByCategoriesApiArg
       >({
-        query: () => ({ url: `/analytics/getExpensesByCategories` }),
+        query: (queryArg) => ({
+          url: `/analytics/getExpensesByCategories`,
+          method: "POST",
+          body: queryArg.getExpensesByCategoriesRequestDto,
+        }),
         providesTags: ["analytics"],
       }),
     }),
@@ -19,8 +23,11 @@ const injectedRtkApi = api
 export { injectedRtkApi as enhancedApi };
 export type GetExpensesByCategoriesApiResponse =
   /** status 200  */ GetExpensesByCategoriesResponseDto[];
-export type GetExpensesByCategoriesApiArg = void;
+export type GetExpensesByCategoriesApiArg = {
+  getExpensesByCategoriesRequestDto: GetExpensesByCategoriesRequestDto;
+};
 export type Category = {
+  id: number;
   name: string;
   color: string;
 };
@@ -30,3 +37,13 @@ export type GetExpensesByCategoriesResponseDto = {
   percentage: number;
 };
 export type ExchangeRatesAreUnavailable = {};
+export type TransactionType = "income" | "outcome" | "transfer";
+export type CategoryFilterBehavior = "exclude" | "include";
+export type GetExpensesByCategoriesRequestDto = {
+  transactionType?: TransactionType;
+  dateFrom?: string;
+  dateTo?: string;
+  accountIds?: number[];
+  categoryIds?: number[];
+  categoryBehavior?: CategoryFilterBehavior;
+};

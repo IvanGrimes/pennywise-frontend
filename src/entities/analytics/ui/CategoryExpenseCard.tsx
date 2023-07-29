@@ -7,6 +7,7 @@ export type CategoryExpenseCardProps = {
   percentage: number;
   amount: number;
   currencySymbol: string;
+  onClick?: () => void;
 };
 
 export const CategoryExpenseCard = ({
@@ -15,9 +16,17 @@ export const CategoryExpenseCard = ({
   name,
   amount,
   currencySymbol,
+  onClick,
 }: CategoryExpenseCardProps) => {
   return (
-    <Paper sx={{ width: '100%' }} radius="md" p="xs" withBorder>
+    <Paper
+      sx={{ width: '100%', cursor: 'pointer' }}
+      radius="md"
+      p="xs"
+      onClick={onClick}
+      component="button"
+      withBorder
+    >
       <Flex align="center" gap={16}>
         <RingProgress
           size={55}

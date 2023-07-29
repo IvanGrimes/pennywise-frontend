@@ -9,15 +9,17 @@ import { categoriesModel } from 'entities/categories';
 import { transactionsModel } from 'entities/transactions';
 import equal from 'fast-deep-equal/react';
 
-type TransactionFiltersFeatureSliceState = Omit<
+export type TransactionFiltersFeatureSliceState = Omit<
   Required<transactionsModel.GetTransactionsRequestDto>,
-  'dateFrom' | 'dateTo'
+  'dateFrom' | 'dateTo' | 'transactionType'
 > &
   Pick<transactionsModel.GetTransactionsRequestDto, 'dateFrom' | 'dateTo'> & {
+    transactionType: transactionsModel.TransactionType | 'all';
     opened: boolean;
     accountOptions: OptionItem[];
     categoryOptions: OptionItem[];
     period: TransactionPeriod;
+    transactionTypeOptions: TransactionTypeFilterOption[];
   };
 
 type OptionItem = { value: string; label: string };
@@ -29,14 +31,26 @@ export enum TransactionPeriod {
   custom = 'custom',
 }
 
+export type TransactionTypeFilterOption = {
+  value: transactionsModel.TransactionType | 'all';
+  label: string;
+};
+
+export const defaultTransactionTypeOptions: TransactionTypeFilterOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'outcome', label: 'Expenses' },
+  { value: 'income', label: 'Income' },
+];
+
 const initialState: TransactionFiltersFeatureSliceState = {
-  transactionType: 'outcome',
+  transactionType: 'all',
   categoryBehavior: 'include',
   categoryIds: [],
   accountIds: [],
   accountOptions: [],
   categoryOptions: [],
   period: TransactionPeriod.month,
+  transactionTypeOptions: defaultTransactionTypeOptions,
   opened: false,
 };
 
@@ -105,8 +119,25 @@ const slice = createSlice({
     ) => {
       state.period = payload.period;
     },
-    changeReadiness: (state, { payload }: PayloadAction<boolean>) => {
-      state.ready = payload;
+    changeTransactionTypeOptions: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        transactionTypeOptions: TransactionTypeFilterOption[];
+      }>
+    ) => {
+      state.transactionTypeOptions = payload.transactionTypeOptions;
+    },
+    resetFilters: (state) => {
+      state.period = initialState.period;
+      state.categoryBehavior = initialState.categoryBehavior;
+      state.transactionType = initialState.transactionType;
+      state.transactionTypeOptions = initialState.transactionTypeOptions;
+      state.categoryIds = [];
+      state.accountIds = [];
+      state.dateFrom = undefined;
+      state.dateTo = undefined;
     },
     open: (state) => {
       state.opened = true;
@@ -119,7 +150,6 @@ const slice = createSlice({
     builder.addMatcher(
       accountsModel.api.endpoints.getAccounts.matchFulfilled,
       (state, { payload }) => {
-        state.accountIds = payload.map((item) => item.id);
         state.accountOptions = payload.map<OptionItem>(({ id, name }) => ({
           value: String(id),
           label: name,
@@ -130,7 +160,6 @@ const slice = createSlice({
     builder.addMatcher(
       categoriesModel.api.endpoints.getCategories.matchFulfilled,
       (state, { payload }) => {
-        state.categoryIds = payload.map((item) => item.id);
         state.categoryOptions = payload.map<OptionItem>(({ id, name }) => ({
           value: String(id),
           label: name,
@@ -147,12 +176,18 @@ const selectState = (state: RootState) => state.transactionFiltersFeature;
 export const selectTransactionFilters = createSelector(
   [selectState],
   (state) => {
-    const { opened, categoryOptions, accountOptions, period, ...filters } =
-      state;
+    const {
+      opened,
+      categoryOptions,
+      accountOptions,
+      period,
+      transactionTypeOptions,
+      ...filters
+    } = state;
 
     return filters;
   },
-  { memoizeOptions: { equalityCheck: equal } }
+  { memoizeOptions: { equalityCheck: equal, resultEqualityCheck: equal } }
 );
 
 export const selectCategoryOptions = createSelector(
@@ -168,7 +203,24 @@ export const selectAccountOptions = createSelector(
 export const selectPeriod = (state: RootState) => selectState(state).period;
 
 export const selectTransactionFiltersModalOpened = (state: RootState) =>
-  state.transactionFiltersFeature.opened;
+  selectState(state).opened;
+
+export const selectTransactionTypeOptions = (state: RootState) =>
+  selectState(state).transactionTypeOptions;
+
+export const selectFiltersApplied = (state: RootState) => {
+  const { period, accountIds, categoryIds, categoryBehavior, transactionType } =
+    selectState(state);
+  const transactionTypeOptions = selectTransactionTypeOptions(state);
+
+  return (
+    period !== initialState.period ||
+    accountIds.length ||
+    categoryIds.length ||
+    categoryBehavior !== initialState.categoryBehavior ||
+    transactionType !== transactionTypeOptions[0].value
+  );
+};
 
 export const {
   changeDate,
@@ -177,39 +229,17 @@ export const {
   changeAccountIds,
   changeTransactionType,
   changePeriod,
+  changeTransactionTypeOptions,
+  resetFilters,
   open,
   close,
 } = actions;
 
-export const resetFiltersThunk = createAsyncThunk<
-  void,
-  void,
-  { state: RootState }
->('transactions-filters/reset', (_, { getState, dispatch }) => {
-  const state = getState() as never;
-  const accounts = accountsModel.api.endpoints.getAccounts.select()(state);
-  const categories =
-    categoriesModel.api.endpoints.getCategories.select()(state);
-
-  if (accounts.data) {
-    dispatch(
-      changeAccountIds({ accountIds: accounts.data.map((item) => item.id) })
-    );
+export const resetFiltersThunk = createAsyncThunk(
+  'transaction-filters/reset',
+  async (_, { dispatch }) => {
+    dispatch(resetFilters());
   }
-
-  if (categories.data) {
-    dispatch(
-      changeCategoryIds({ categoryIds: categories.data.map((item) => item.id) })
-    );
-  }
-
-  dispatch(
-    changeTransactionType({ transactionType: initialState.transactionType })
-  );
-  dispatch(
-    changeCategoryBehavior({ categoryBehavior: initialState.categoryBehavior })
-  );
-  dispatch(changePeriod({ period: initialState.period }));
-});
+);
 
 export { name, reducer };

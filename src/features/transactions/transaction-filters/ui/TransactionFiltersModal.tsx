@@ -1,38 +1,64 @@
-import { transactionsModel } from 'entities/transactions';
 import { useEffect } from 'react';
+import { IconFilterOff } from 'shared/icons';
 import { useAppDispatch, useAppSelector } from 'shared/model';
-import { Modal } from 'shared/ui';
+import { Button, Modal } from 'shared/ui';
 import {
   selectTransactionFiltersModalOpened,
   close,
-  selectTransactionFilters,
-  resetFiltersThunk,
+  resetFilters,
+  selectFiltersApplied,
+  changeTransactionTypeOptions,
 } from '../model';
-import { TransactionTypeFilter } from './TransactionTypeFilter';
+import {
+  TransactionTypeFilter,
+  TransactionTypeFilterProps,
+} from './TransactionTypeFilter';
 import { TransactionPeriodFilter } from './TransactionPeriodFilter';
 import { TransactionAccountFilter } from './TransactionAccountFilter';
 import { TransactionCategoryFilter } from './TransactionCategoryFilter';
 import { TransactionCategoryBehaviorFilter } from './TransactionCategoryBehaviorFilter';
-// @todo: reset filter
-export const TransactionFiltersModal = () => {
-  const filters = useAppSelector(selectTransactionFilters);
+
+export type TransactionFiltersModalProps = {
+  transactionTypeOptions?: TransactionTypeFilterProps['options'];
+};
+
+export const TransactionFiltersModal = ({
+  transactionTypeOptions,
+}: TransactionFiltersModalProps) => {
   const opened = useAppSelector(selectTransactionFiltersModalOpened);
+  const filtersApplied = useAppSelector(selectFiltersApplied);
   const dispatch = useAppDispatch();
   const handleClose = () => dispatch(close());
-  const [transactionsQuery, transactions] =
-    transactionsModel.api.useLazyGetTransactionsQuery();
+  const handleReset = () => dispatch(resetFilters());
 
   useEffect(() => {
-    if (!opened) return;
-    transactionsQuery({ getTransactionsRequestDto: filters });
-  }, [filters, transactionsQuery, opened]);
+    if (!transactionTypeOptions) return;
+
+    dispatch(changeTransactionTypeOptions({ transactionTypeOptions }));
+  }, [dispatch, transactionTypeOptions]);
 
   return (
     <Modal title="Filters" opened={opened} onClose={handleClose}>
-      <button type="button" onClick={() => dispatch(resetFiltersThunk())}>
-        reset
-      </button>
-      <TransactionTypeFilter />
+      {filtersApplied && (
+        <Button
+          variant="outline"
+          size="xs"
+          color="red"
+          sx={{
+            '&&': {
+              padding: 6,
+              paddingTop: 4,
+              paddingBottom: 4,
+              '.mantine-Button-leftIcon': { marginRight: 4 },
+            },
+          }}
+          leftIcon={<IconFilterOff size="1rem" />}
+          onClick={handleReset}
+        >
+          Clear
+        </Button>
+      )}
+      <TransactionTypeFilter options={transactionTypeOptions} />
       <TransactionPeriodFilter />
       <TransactionAccountFilter />
       <TransactionCategoryBehaviorFilter />

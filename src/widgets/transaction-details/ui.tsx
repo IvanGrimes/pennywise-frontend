@@ -81,9 +81,7 @@ export const TransactionDetails = ({
         },
       }).unwrap();
 
-      if (accountId !== values.accountId) {
-        accounts.refetch();
-      }
+      await accounts.refetch();
     } catch (e) {
       // @todo: handle error
       console.log(e);

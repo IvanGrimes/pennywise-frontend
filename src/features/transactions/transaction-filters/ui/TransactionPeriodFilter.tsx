@@ -62,8 +62,10 @@ export const TransactionPeriodFilter = () => {
     dispatch(changeDate({ dateTo: dayjs(value).format('YYYY-MM-DD') }));
 
   useEffect(() => {
+    if (filters.dateFrom || filters.dateTo) return;
+
     handleChange(period);
-  }, [handleChange, period]);
+  }, [filters.dateFrom, filters.dateTo, handleChange, period]);
 
   return (
     <>
