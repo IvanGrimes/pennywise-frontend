@@ -15,4 +15,5 @@ export const routes = {
   accountPage: ({ id, page }: { id?: number; page?: number } = {}) =>
     id ? `/accounts/${id}/${page}` : '/accounts/:id/:page',
   analytics: '/analytics',
+  settings: '/settings',
 };

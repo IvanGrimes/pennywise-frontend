@@ -1,3 +1,5 @@
-import { userApi as api } from 'shared/api';
+import { userApi as api, UpdateMeRequestDto } from 'shared/api';
 
-export { api };
+export type StartDay = NonNullable<UpdateMeRequestDto['startDay']>;
+
+export { api, type UpdateMeRequestDto };

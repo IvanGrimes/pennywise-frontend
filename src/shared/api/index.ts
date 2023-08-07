@@ -10,7 +10,10 @@ export { enhancedApi as authApi } from 'generated/rtk-query/auth';
 export { enhancedApi as emailVerificationApi } from 'generated/rtk-query/email-verification';
 export { enhancedApi as resetPasswordApi } from 'generated/rtk-query/reset-password';
 export { enhancedApi as sessionApi } from 'generated/rtk-query/session';
-export { enhancedApi as userApi } from 'generated/rtk-query/user';
+export {
+  enhancedApi as userApi,
+  type UpdateMeRequestDto,
+} from 'generated/rtk-query/user';
 export {
   enhancedApi as transactionsApi,
   type TransactionType,

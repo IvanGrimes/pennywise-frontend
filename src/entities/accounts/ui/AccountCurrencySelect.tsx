@@ -1,10 +1,13 @@
+import { FocusEventHandler } from 'react';
 import { NativeSelect } from 'shared/ui';
 import { AccountCurrency, currencySymbol } from '../model';
 
 export type AccountCurrencySelectProps = {
-  value: AccountCurrency;
-  onChange: (value: AccountCurrency) => void;
+  value?: AccountCurrency;
+  onChange?: (value: AccountCurrency) => void;
   disabled?: boolean;
+  defaultValue?: AccountCurrency;
+  onBlur?: FocusEventHandler<HTMLSelectElement>;
 };
 
 const accountCurrencies: { value: AccountCurrency; label: string }[] = [
@@ -22,7 +25,7 @@ export const AccountCurrencySelect = ({
   <NativeSelect
     label="Currency"
     data={accountCurrencies}
-    onChange={(ev) => onChange(ev.target.value as AccountCurrency)}
+    onChange={(ev) => onChange?.(ev.target.value as AccountCurrency)}
     {...props}
   />
 );

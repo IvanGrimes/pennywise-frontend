@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
+import { viewerModel } from 'entities/viewer';
 import { useCallback, useEffect } from 'react';
 import { DatePickerInput } from 'shared/dates';
 import { Group, SegmentedControl } from 'shared/ui';
@@ -21,9 +22,12 @@ const transactionPeriodList: { value: TransactionPeriod; label: string }[] = [
 export const TransactionPeriodFilter = () => {
   const period = useAppSelector(selectPeriod);
   const filters = useAppSelector(selectTransactionFilters);
+  const viewer = viewerModel.api.useMeQuery();
   const dispatch = useAppDispatch();
   const handleChange = useCallback(
     (nextPeriod: TransactionPeriod) => {
+      if (!viewer.currentData) return;
+
       let dates: [Dayjs | null, Dayjs | null] = [null, null];
 
       switch (nextPeriod) {
@@ -31,10 +35,13 @@ export const TransactionPeriodFilter = () => {
           dates = [dayjs().subtract(1, 'week'), dayjs()];
 
           break;
-        case TransactionPeriod.month:
-          dates = [dayjs().subtract(1, 'month'), dayjs()];
+        case TransactionPeriod.month: {
+          const today = dayjs().set('date', viewer.currentData.startDay);
+
+          dates = [today.subtract(1, 'month'), today];
 
           break;
+        }
         case TransactionPeriod.year:
           dates = [dayjs().subtract(1, 'year'), dayjs()];
 
@@ -44,6 +51,7 @@ export const TransactionPeriodFilter = () => {
       const [dateFrom, dateTo] = dates;
 
       dispatch(changePeriod({ period: nextPeriod }));
+
       if (dateFrom && dateTo) {
         dispatch(
           changeDate({
@@ -53,7 +61,7 @@ export const TransactionPeriodFilter = () => {
         );
       }
     },
-    [dispatch]
+    [dispatch, viewer.currentData]
   );
   const handleChangeDateFrom = (value: Date) =>
     dispatch(changeDate({ dateFrom: dayjs(value).format('YYYY-MM-DD') }));

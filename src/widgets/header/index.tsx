@@ -1,10 +1,11 @@
 import { ToggleThemeSwitch } from 'features/theme/toggle-theme';
 import { lazy, useMemo } from 'react';
+import { IconSettings } from 'shared/icons';
 import { useAppSelector } from 'shared/model';
 import { routes } from 'shared/routes';
 import { Group, Header as BaseHeader, HeaderMenuListItem } from 'shared/ui';
-import { UserDropdown } from 'entities/viewer';
-import { useLocation } from 'react-router-dom';
+import { UserDropdown, UserDropdownItem } from 'entities/viewer';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { authModel } from 'entities/auth';
 import { UserCard } from 'features/user-dropdown/user-card';
 import { EmailStatus } from 'features/email/email-status';
@@ -27,18 +28,25 @@ const SessionManager = lazy(() =>
 export const Header = () => {
   const location = useLocation();
   const isAuth = useAppSelector(authModel.isAuth);
+  const navigate = useNavigate();
   const userDropdown = useMemo(
     () => (
       <UserDropdown
         cardSlot={({ active }) => <UserCard active={active} />}
         topSlot={<EmailStatus />}
       >
+        <UserDropdownItem
+          Icon={IconSettings}
+          onClick={() => navigate(routes.settings)}
+        >
+          Account settings
+        </UserDropdownItem>
         <CategoryList />
         <SessionManager />
         <SignOut />
       </UserDropdown>
     ),
-    []
+    [navigate]
   );
 
   return (
