@@ -9,10 +9,10 @@ export type TransactionCardProps = {
   href: string;
   accountName: string;
   amount: number;
-  description: string | null;
+  description: string | undefined;
   currencySymbol: string;
   date: string;
-  categorySlot: ReactNode;
+  topSlot: ReactNode;
 };
 
 export const TransactionCard = ({
@@ -22,12 +22,12 @@ export const TransactionCard = ({
   amount,
   accountName,
   description,
-  categorySlot,
+  topSlot,
   currencySymbol,
 }: TransactionCardProps) => (
   <EntityCard href={href}>
     <Group position="apart">
-      {categorySlot}
+      {topSlot}
       <TransactionAmount
         type={type}
         amount={amount}

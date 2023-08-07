@@ -25,6 +25,7 @@ export {
   ColorSchemeProvider,
   useMantineColorScheme,
   MultiSelect,
+  Pagination,
 } from '@mantine/core';
 export type {
   TextInputProps,
@@ -51,6 +52,7 @@ export type {
   ColorScheme,
   MultiSelectProps,
   SelectItem,
+  PaginationProps,
 } from '@mantine/core';
 
 export * from './Layout';

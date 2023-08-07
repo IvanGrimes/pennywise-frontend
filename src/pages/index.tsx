@@ -26,9 +26,11 @@ export const Routing = () => (
       <Route path={routes.resetPassword} element={<ResetPassword />} />
       <Route path={routes.setPassword} element={<SetPassword />} />
       <Route path={routes.transactions} element={<Transactions />} />
+      <Route path={routes.transactionsPage()} element={<Transactions />} />
       <Route path={routes.transaction()} element={<Transaction />} />
       <Route path={routes.accounts} element={<Accounts />} />
       <Route path={routes.account()} element={<Account />} />
+      <Route path={routes.accountPage()} element={<Account />} />
       <Route path={routes.analytics} element={<Analytics />} />
     </Routes>
   </Layout>

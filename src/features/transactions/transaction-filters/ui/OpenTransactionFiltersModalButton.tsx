@@ -16,7 +16,10 @@ export const OpenTransactionFiltersModalButton = () => {
       variant={filtersApplied ? 'light' : 'subtle'}
       onClick={handleClick}
     >
-      <Icon color={filtersApplied ? theme.colors.blue[5] : undefined} />
+      <Icon
+        strokeWidth={1.25}
+        color={filtersApplied ? theme.colors.blue[5] : undefined}
+      />
     </ActionIcon>
   );
 };

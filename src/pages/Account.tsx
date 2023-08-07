@@ -9,16 +9,20 @@ import { withPrivateGuard } from './utils/withPrivateGuard';
 import { AccountDetails } from 'widgets/account-details';
 
 const Account = () => {
-  const { id } = useParams();
+  const params = useParams<{ id?: string; page?: string }>();
   const navigate = useNavigate();
+  const page = params.page ? Number(params.page) : 1;
+  const pageSize = 10;
   const transactions = transactionsModel.api.useGetTransactionsByAccountQuery(
-    { id: Number(id) },
-    { skip: !id }
+    { id: Number(params.id), offset: pageSize * (page - 1), limit: pageSize },
+    { skip: !params.id }
   );
   const account = accountsModel.api.useGetAccountsQuery(undefined, {
-    skip: !id,
+    skip: !params.id,
     selectFromResult: ({ currentData, isUninitialized, isFetching }) => {
-      const accountById = currentData?.find((item) => item.id === Number(id));
+      const accountById = currentData?.find(
+        (item) => item.id === Number(params.id)
+      );
 
       return {
         currentData: accountById,
@@ -29,10 +33,10 @@ const Account = () => {
   });
 
   useEffect(() => {
-    if (id && !account.isNotFound) return;
+    if (params.id && !account.isNotFound) return;
 
     navigate(routes.accounts);
-  }, [account.isNotFound, id, navigate]);
+  }, [account.isNotFound, params.id, navigate]);
 
   if (
     !transactions.currentData ||
@@ -48,8 +52,13 @@ const Account = () => {
       <AccountDetails {...account.currentData} />
       <Box mt="md">
         <TransactionList
-          list={transactions.currentData}
+          data={transactions.currentData}
           isFetching={transactions.isFetching}
+          page={page}
+          size={pageSize}
+          getPaginatedHref={(nextPage) =>
+            routes.accountPage({ id: Number(params.id), page: nextPage })
+          }
         />
       </Box>
     </div>

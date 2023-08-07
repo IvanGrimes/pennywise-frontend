@@ -8,7 +8,7 @@ import {
   DeleteCategoryModal,
   OpenDeleteCategoryModalButton,
 } from 'features/categories/delete-category-modal';
-import { useRef, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { useModal } from 'shared/hooks';
 import { IconTag } from 'shared/icons';
 import {
@@ -55,9 +55,8 @@ export const CategoryList = () => {
             const { name, color } = item;
 
             return (
-              <>
+              <Fragment key={name + color}>
                 <Button
-                  key={name + color}
                   sx={{
                     padding: '0 8px',
                     '&& .mantine-Button-inner': {
@@ -71,7 +70,7 @@ export const CategoryList = () => {
                   <CategoryTitle name={name} color={color} />
                 </Button>
                 <Divider />
-              </>
+              </Fragment>
             );
           })}
         </Flex>

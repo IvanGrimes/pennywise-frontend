@@ -8,7 +8,10 @@ export type { SegmentedControlProps };
 
 const useStyles = createStyles((theme) => ({
   container: {
-    backgroundColor: theme.colors.dark[8],
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[8]
+        : theme.colors.gray[1],
   },
 }));
 

@@ -9,6 +9,8 @@ import { categoriesModel } from 'entities/categories';
 import { transactionsModel } from 'entities/transactions';
 import equal from 'fast-deep-equal/react';
 
+// @todo: разбить на файлы
+
 export type TransactionFiltersFeatureSliceState = Omit<
   Required<transactionsModel.GetTransactionsRequestDto>,
   'dateFrom' | 'dateTo' | 'transactionType'

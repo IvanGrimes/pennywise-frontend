@@ -9,31 +9,12 @@ import { TransactionDetails } from 'widgets/transaction-details';
 const Transaction = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const transaction = transactionsModel.api.useGetTransactionsQuery(
-    { getTransactionsRequestDto: {} },
-    {
-      skip: !Number.isFinite(Number(id)),
-      selectFromResult: ({
-        currentData,
-        isError,
-        error,
-        isFetching,
-        isUninitialized,
-      }) => {
-        const transactionById = currentData?.find(
-          (item) => item.id === Number(id)
-        );
-
-        return {
-          isFetching,
-          currentData: transactionById,
-          isError,
-          error,
-          isNotFound: isUninitialized ? false : !isFetching && !transactionById,
-        };
-      },
-    }
+  const parsedId = Number(id);
+  const transaction = transactionsModel.api.useGetTransactionByIdQuery(
+    { id: parsedId },
+    { skip: !Number.isFinite(parsedId) }
   );
+  const isNotFound = !transaction.isFetching && !transaction.currentData;
   const category = categoriesModel.api.useGetCategoriesQuery(undefined, {
     skip: !transaction.currentData,
     selectFromResult: ({ currentData, isFetching }) => ({
@@ -47,10 +28,10 @@ const Transaction = () => {
   });
 
   useEffect(() => {
-    if (id && !transaction.isNotFound) return;
+    if (id && !isNotFound) return;
 
     navigate(routes.transactions);
-  }, [id, navigate, transaction.isNotFound]);
+  }, [id, navigate, isNotFound]);
 
   if (
     !id ||

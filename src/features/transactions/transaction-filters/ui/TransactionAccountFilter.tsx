@@ -1,3 +1,4 @@
+import { accountsModel } from 'entities/accounts';
 import { useAppDispatch, useAppSelector } from 'shared/model';
 import { MultiSelect } from 'shared/ui';
 import {
@@ -12,6 +13,8 @@ export const TransactionAccountFilter = () => {
   const dispatch = useAppDispatch();
   const handleChange = (ids: string[]) =>
     dispatch(changeAccountIds({ accountIds: ids.map(Number) }));
+
+  accountsModel.api.useGetAccountsQuery();
 
   return (
     <MultiSelect
